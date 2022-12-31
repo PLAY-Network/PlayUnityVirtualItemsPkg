@@ -1,58 +1,68 @@
-using NUnit.Framework;
-using RGN.Extensions;
-using RGN.Impl.Firebase.Core;
-using RGN.Modules.VirtualItems;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
+using RGN.Extensions;
+using RGN.Modules.VirtualItems;
+using RGN.Tests;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace RGN.VirtualItems.Tests.Runtime
 {
-    [TestFixture]
-    public class VirtualItemsTests
+    public class VirtualItemsTests : BaseTests
     {
-        [OneTimeSetUp]
-        public async void OneTimeSetup()
+        private static readonly List<bool> _addVirtualItemStackableOptions = new List<bool> { true, false };
+
+        [UnityTest]
+        public IEnumerator AddVirtualItem_WorksOnlyForAdminUsers([ValueSource("_addVirtualItemStackableOptions")] bool isStackable)
         {
-            var applicationStore = ApplicationStore.I; //TODO: this will work only in editor.
-            RGNCoreBuilder.AddModule(new VirtualItemModule(applicationStore.RGNStorageURL));
-            var appOptions = new AppOptions()
-            {
-                ApiKey = applicationStore.RGNMasterApiKey,
-                AppId = applicationStore.RGNMasterAppID,
-                ProjectId = applicationStore.RGNMasterProjectId
+            yield return LoginAsAdminTester();
+
+            var virtualItem = new VirtualItem() {
+                name = "Play Test Item",
+                description = "Created in Unity play tests",
+                appIds = new List<string>() { RGNCoreBuilder.I.AppIDForRequests },
+                isStackable = isStackable,
             };
 
-            await RGNCoreBuilder.Build(
-                new RGN.Impl.Firebase.Dependencies(
-                    appOptions,
-                    applicationStore.RGNStorageURL),
-                appOptions,
-               applicationStore.RGNStorageURL,
-               applicationStore.RGNAppId);
+            var task = VirtualItemModule.I.AddVirtualItem(virtualItem);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
 
-            if (applicationStore.usingEmulator)
-            {
-                RGNCore rgnCore = (RGNCore)RGNCoreBuilder.I;
-                var firestore = rgnCore.readyMasterFirestore;
-                string firestoreHost = applicationStore.emulatorServerIp + applicationStore.firestorePort;
-                bool firestoreSslEnabled = false;
-                firestore.UserEmulator(firestoreHost, firestoreSslEnabled);
-                rgnCore.readyMasterFunction.UseFunctionsEmulator(applicationStore.emulatorServerIp + applicationStore.functionsPort);
-                //TODO: storage, auth, realtime db
-            }
+            Assert.NotNull(result, "The result is null");
+            UnityEngine.Debug.Log("Added new virtual item: " + result.id);
+        }
+
+        [UnityTest]
+        public IEnumerator AddVirtualItem_FailsForNormalUsers([ValueSource("_addVirtualItemStackableOptions")] bool isStackable)
+        {
+            yield return LoginAsNormalTester();
+
+            var virtualItem = new VirtualItem() {
+                name = "Play Test Item",
+                description = "Created in Unity play tests",
+                appIds = new List<string>() { RGNCoreBuilder.I.AppIDForRequests },
+                isStackable = isStackable,
+            };
+
+            var task = VirtualItemModule.I.AddVirtualItem(virtualItem);
+            yield return task.AsIEnumeratorReturnNullDontThrow();
+
+            Assert.True(task.IsFaulted, "Virtual item was added to db even with normal user account. Only admins or creators can add new items");
         }
 
         [UnityTest]
         public IEnumerator GetVirtualItemsByIds_ReturnsItemsForExistingItems()
         {
+            yield return LoginAsNormalTester();
+
             var ids = new List<string>()
             {
                 "0e31cf69-d1c1-4b07-a756-63af82e124e6",
                 "3ddc10ae-8a04-4f9f-9cf5-fc5b0e6b4cb8"
             };
 
-            var task = RGNCoreBuilder.I.GetModule<VirtualItemModule>().GetVirtualItemsByIds(ids);
+            var task = VirtualItemModule.I.GetVirtualItemsByIds(ids);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -63,13 +73,15 @@ namespace RGN.VirtualItems.Tests.Runtime
         [UnityTest]
         public IEnumerator GetVirtualItemsByIds_NoItemsForNonExistingItems()
         {
+            yield return LoginAsNormalTester();
+
             var ids = new List<string>()
             {
                 "non_existing_item_one",
                 "non_existing_item_two"
             };
 
-            var task = RGNCoreBuilder.I.GetModule<VirtualItemModule>().GetVirtualItemsByIds(ids);
+            var task = VirtualItemModule.I.GetVirtualItemsByIds(ids);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -78,25 +90,52 @@ namespace RGN.VirtualItems.Tests.Runtime
             Assert.AreEqual(0, result.Count);
         }
         [UnityTest]
+        public IEnumerator GetVirtualItemsByIds_ReturnsOnlyExistingItems()
+        {
+            yield return LoginAsNormalTester();
+
+            var ids = new List<string>()
+            {
+                "non_existing_item_one",
+                "0e31cf69-d1c1-4b07-a756-63af82e124e6",
+                "non_existing_item_two",
+                "3ddc10ae-8a04-4f9f-9cf5-fc5b0e6b4cb8"
+            };
+
+            var task = VirtualItemModule.I.GetVirtualItemsByIds(ids);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+
+            Assert.NotNull(result, "The result is null");
+            Assert.IsNotEmpty(result, "Got empty list for existing items");
+            Assert.AreEqual(2, result.Count);
+        }
+
+        [UnityTest]
         public IEnumerator GetVirtualItems_ReturnsItemsForCurrentApp()
         {
-            var task = RGNCoreBuilder.I.GetModule<VirtualItemModule>().GetVirtualItems();
+            yield return LoginAsNormalTester();
+
+            var task = VirtualItemModule.I.GetVirtualItems();
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
             Assert.NotNull(result, "The result is null");
             Assert.IsNotEmpty(result, "Got empty list for current app: " + RGNCoreBuilder.I.AppIDForRequests);
         }
+
         [UnityTest]
         public IEnumerator GetAllVirtualItemsByAppIds_ReturnsItemsForRequestedApps()
         {
+            yield return LoginAsNormalTester();
+
             List<string> appIds = new List<string>()
             {
                 "io.getready.rgntest",
                 "io.test.test"
             };
 
-            var task = RGNCoreBuilder.I.GetModule<VirtualItemModule>().GetAllVirtualItemsByAppIds(appIds);
+            var task = VirtualItemModule.I.GetAllVirtualItemsByAppIds(appIds);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -105,12 +144,114 @@ namespace RGN.VirtualItems.Tests.Runtime
         }
 
         [UnityTest]
+        public IEnumerator GetTags_ReturnsArrayOfOfferTags()
+        {
+            yield return LoginAsNormalTester();
+
+            // specially created item for tests
+            var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
+
+            var virtualItemModule = VirtualItemModule.I;
+
+            var getVirtualItemTagsTask = virtualItemModule.GetTags(virtualItemId);
+            yield return getVirtualItemTagsTask.AsIEnumeratorReturnNull();
+            var getVirtualItemTagsResult = getVirtualItemTagsTask.Result;
+
+            Assert.NotNull(getVirtualItemTagsResult.tags, "Array of tags is null");
+        }
+
+        [UnityTest]
+        public IEnumerator SetTags_ChecksSetTags()
+        {
+            yield return LoginAsAdminTester();
+
+            // specially created item for tests
+            var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
+            var newTags = new[]
+            {
+                "tag1" + UnityEngine.Random.Range(0, 1000),
+            };
+
+            var virtualItemModule = VirtualItemModule.I;
+
+            var setTagsTask = virtualItemModule.SetTags(virtualItemId, newTags);
+            yield return setTagsTask.AsIEnumeratorReturnNull();
+
+            var getVirtualItemTagsTask = virtualItemModule.GetTags(virtualItemId);
+            yield return getVirtualItemTagsTask.AsIEnumeratorReturnNull();
+            var getVirtualItemTagsResult = getVirtualItemTagsTask.Result;
+
+            var tagsAreEqual = newTags.Length == getVirtualItemTagsResult.tags.Length;
+            if (tagsAreEqual)
+            {
+                for (var i = 0; i < newTags.Length; i++)
+                {
+                    if (newTags[i].Equals(getVirtualItemTagsResult.tags[i]))
+                    {
+                        continue;
+                    }
+                    tagsAreEqual = false;
+                    break;
+                }
+            }
+            Assert.True(tagsAreEqual, "Tags field didn't set properly");
+        }
+
+        [UnityTest]
+        public IEnumerator SetName_ChecksSetName()
+        {
+            yield return LoginAsAdminTester();
+
+            // specially created item for tests
+            var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
+            var newName = "Name" + UnityEngine.Random.Range(0, 1000);
+
+            var virtualItemModule = VirtualItemModule.I;
+
+            var setNameTask = virtualItemModule.SetName(virtualItemId, newName);
+            yield return setNameTask.AsIEnumeratorReturnNull();
+
+            var getVirtualItemsTask = virtualItemModule.GetVirtualItemsByIds(new List<string> { virtualItemId });
+            yield return getVirtualItemsTask.AsIEnumeratorReturnNull();
+            var getVirtualItemsResult = getVirtualItemsTask.Result;
+
+            Assert.NotNull(getVirtualItemsResult, "Array of virtual items is null");
+            Assert.IsNotEmpty(getVirtualItemsResult, "Array of virtual items is empty");
+            Assert.AreEqual(newName, getVirtualItemsResult[0].name, "Name field didn't set properly");
+        }
+
+        [UnityTest]
+        public IEnumerator SetDescription_ChecksSetName()
+        {
+            yield return LoginAsAdminTester();
+
+            // specially created item for tests
+            var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
+            var newDescription = "Description" + UnityEngine.Random.Range(0, 1000);
+
+            var virtualItemModule = VirtualItemModule.I;
+
+            var setDescriptionTask = virtualItemModule.SetDescription(virtualItemId, newDescription);
+            yield return setDescriptionTask.AsIEnumeratorReturnNull();
+
+            var getVirtualItemsTask = virtualItemModule.GetVirtualItemsByIds(new List<string> { virtualItemId });
+            yield return getVirtualItemsTask.AsIEnumeratorReturnNull();
+            var getVirtualItemsResult = getVirtualItemsTask.Result;
+
+            Assert.NotNull(getVirtualItemsResult, "Array of virtual items is null");
+            Assert.IsNotEmpty(getVirtualItemsResult, "Array of virtual items is empty");
+            Assert.AreEqual(newDescription, getVirtualItemsResult[0].description, "Description field didn't set properly");
+        }
+
+        [UnityTest]
         public IEnumerator SetProperties_ReturnsPropertiesThatWasSet()
         {
+            yield return LoginAsAdminTester();
+
             var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
             var propertiesToSet = "{}";
 
-            var task = RGNCoreBuilder.I.GetModule<VirtualItemModule>().SetProperties(virtualItemId, propertiesToSet);
+            var task = VirtualItemModule.I.SetProperties(virtualItemId, propertiesToSet);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -118,19 +259,34 @@ namespace RGN.VirtualItems.Tests.Runtime
             Assert.AreEqual(propertiesToSet, result);
             UnityEngine.Debug.Log(result);
         }
+
         [UnityTest]
         public IEnumerator GetProperties_ReturnsPropertiesThatWasSetBeforeInDB()
         {
+            yield return LoginAsNormalTester();
+
             var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
             var expectedProperties = "{}";
 
-            var task = RGNCoreBuilder.I.GetModule<VirtualItemModule>().GetProperties(virtualItemId);
+            var task = VirtualItemModule.I.GetProperties(virtualItemId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
             Assert.NotNull(result, "The result is null");
             Assert.AreEqual(expectedProperties, result);
             UnityEngine.Debug.Log(result);
+        }
+        // TODO: [UnityTest]
+        public IEnumerator DownloadVirtualItemThumbnail_CastToUnityTexture2DWorks()
+        {
+            yield return LoginAsNormalTester();
+
+            var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
+            var task = VirtualItemModule.I.DownloadVirtualItemThumbnail<Texture2D>(virtualItemId);
+            yield return task.AsIEnumeratorReturnNull();
+
+            Texture2D result = task.Result;
+            Debug.Log(result.width + ":" + result.height);
         }
     }
 }
