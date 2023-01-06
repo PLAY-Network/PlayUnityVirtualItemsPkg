@@ -326,7 +326,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             yield return LoginAsNormalTester();
 
             var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
-            var task = VirtualItemModule.I.DownloadVirtualItemThumbnailAsync<Texture2D>(virtualItemId);
+            var task = VirtualItemModule.I.DownloadThumbnailAsync<Texture2D>(virtualItemId);
             yield return task.AsIEnumeratorReturnNull();
 
             Texture2D result = task.Result;
