@@ -170,7 +170,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 "io.test.test"
             };
 
-            var task = VirtualItemModule.I.GetAllVirtualItemsByAppIdsAsync(appIds);
+            var task = VirtualItemModule.I.GetAllVirtualItemsByAppIdsAsync(appIds, 1000);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
