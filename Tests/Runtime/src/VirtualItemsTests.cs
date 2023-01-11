@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using RGN.Extensions;
 using RGN.Modules.VirtualItems;
@@ -185,6 +186,31 @@ namespace RGN.VirtualItems.Tests.Runtime
                 }
             }
         }
+        
+        [UnityTest]
+        public IEnumerator GetByTags_ReturnsArrayOfOffers()
+        {
+            yield return LoginAsAdminTester();
+            
+            var tagsToFind = new[] { "tagToFind" };
+            
+            var getVirtualItemsByTagsTask = VirtualItemModule.I.GetByTagsAsync(tagsToFind);
+            yield return getVirtualItemsByTagsTask.AsIEnumeratorReturnNull();
+            var getVirtualItemsByTagsResult = getVirtualItemsByTagsTask.Result;
+            
+            Assert.IsNotEmpty(getVirtualItemsByTagsResult);
+
+            var areVirtualItemsTagsCorrect =
+                tagsToFind.Any(x => getVirtualItemsByTagsResult[0].tags.Contains(x));
+
+            Assert.True(areVirtualItemsTagsCorrect, "Retrieved virtual items doesn't contains any requested tag");
+
+            var noDuplicates = getVirtualItemsByTagsResult
+                .GroupBy(x => x.id)
+                .Any(g => g.Count() <= 1);
+
+            Assert.True(noDuplicates, "Request returns duplicated virtual items");
+        }
 
         [UnityTest]
         public IEnumerator GetTags_ReturnsArrayOfOfferTags()
@@ -214,6 +240,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             {
                 "tag1" + UnityEngine.Random.Range(0, 1000),
             };
+            string appId = "io.getready.rgntest";
 
             var virtualItemModule = VirtualItemModule.I;
 
@@ -229,7 +256,10 @@ namespace RGN.VirtualItems.Tests.Runtime
             {
                 for (var i = 0; i < newTags.Length; i++)
                 {
-                    if (newTags[i].Equals(getVirtualItemTagsResult.tags[i]))
+                    string expectedTag = $"{newTags[i]}_{appId}";
+                    string actualTag = getVirtualItemTagsResult.tags[i];
+                    
+                    if (expectedTag.Equals(actualTag))
                     {
                         continue;
                     }
