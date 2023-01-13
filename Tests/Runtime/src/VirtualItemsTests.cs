@@ -15,6 +15,7 @@ namespace RGN.VirtualItems.Tests.Runtime
     public class VirtualItemsTests : BaseTests
     {
         private static readonly List<bool> _addVirtualItemStackableOptions = new List<bool> { true, false };
+        private static readonly List<bool> _updateVirtualItemStackableOptions = new List<bool> { true, false };
 
         [UnityTest]
         public IEnumerator AddVirtualItem_WorksOnlyForAdminUsers([ValueSource("_addVirtualItemStackableOptions")] bool isStackable)
@@ -53,6 +54,53 @@ namespace RGN.VirtualItems.Tests.Runtime
             yield return task.AsIEnumeratorReturnNullDontThrow();
 
             Assert.True(task.IsFaulted, "Virtual item was added to db even with normal user account. Only admins or creators can add new items");
+        }
+
+        [UnityTest]
+        public IEnumerator UpdateVirtualItem_DocExist_AdminUsers([ValueSource("_updateVirtualItemStackableOptions")] bool isStackable)
+        {
+            yield return LoginAsAdminTester();
+
+            string itemId = "0e31cf69-d1c1-4b07-a756-63af82e124e6";
+
+            var virtualItem = new VirtualItem() {
+                id = itemId,
+                name = "Play Test Item",
+                description = "Created in Unity play tests",
+                appIds = new List<string>() { RGNCoreBuilder.I.AppIDForRequests },
+                isStackable = isStackable,
+            };
+
+            var task = VirtualItemModule.I.UpdateVirtualItemAsync(itemId, virtualItem);
+            yield return task.AsIEnumeratorReturnNull();
+
+            var result = task.Result;
+
+            Assert.NotNull(result, "The result is null");
+            UnityEngine.Debug.Log("Updated virtual item: " + result.id);
+            CheckVirtualItemFields_CreatedUpdated(result);
+        }
+
+        [UnityTest]
+        public IEnumerator UpdateVirtualItem_DocIsNotExist_AdminUsers([ValueSource("_updateVirtualItemStackableOptions")] bool isStackable)
+        {
+            yield return LoginAsAdminTester();
+
+            string itemId = "999999-9999-99999-9999-999999999";
+
+            var virtualItem = new VirtualItem() {
+                id = itemId,
+                name = "Play Test Item",
+                description = "Created in Unity play tests",
+                appIds = new List<string>() { RGNCoreBuilder.I.AppIDForRequests },
+                isStackable = isStackable,
+            };
+
+            var task = VirtualItemModule.I.UpdateVirtualItemAsync(itemId, virtualItem);
+            yield return task.AsIEnumeratorReturnNullDontThrow();
+
+            Assert.IsTrue(task.IsFaulted, "The item is updated, item id: " + virtualItem.id);
+            UnityEngine.Debug.Log("Virtual item is not exist: " + virtualItem.id);
         }
 
         [UnityTest]
@@ -244,7 +292,7 @@ namespace RGN.VirtualItems.Tests.Runtime
 
             var virtualItemModule = VirtualItemModule.I;
 
-            var setTagsTask = virtualItemModule.SetTagsAsync(virtualItemId, newTags);
+            var setTagsTask = virtualItemModule.SetTagsAsync(virtualItemId, newTags, appId);
             yield return setTagsTask.AsIEnumeratorReturnNull();
 
             var getVirtualItemTagsTask = virtualItemModule.GetTagsAsync(virtualItemId);
