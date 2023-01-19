@@ -29,7 +29,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 isStackable = isStackable,
             };
 
-            var task = VirtualItemModule.I.AddVirtualItemAsync(virtualItem);
+            var task = VirtualItemsModule.I.AddVirtualItemAsync(virtualItem);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -50,7 +50,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 isStackable = isStackable,
             };
 
-            var task = VirtualItemModule.I.AddVirtualItemAsync(virtualItem);
+            var task = VirtualItemsModule.I.AddVirtualItemAsync(virtualItem);
             yield return task.AsIEnumeratorReturnNullDontThrow();
 
             Assert.True(task.IsFaulted, "Virtual item was added to db even with normal user account. Only admins or creators can add new items");
@@ -71,7 +71,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 isStackable = isStackable,
             };
 
-            var task = VirtualItemModule.I.UpdateVirtualItemAsync(itemId, virtualItem);
+            var task = VirtualItemsModule.I.UpdateVirtualItemAsync(itemId, virtualItem);
             yield return task.AsIEnumeratorReturnNull();
 
             var result = task.Result;
@@ -96,7 +96,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 isStackable = isStackable,
             };
 
-            var task = VirtualItemModule.I.UpdateVirtualItemAsync(itemId, virtualItem);
+            var task = VirtualItemsModule.I.UpdateVirtualItemAsync(itemId, virtualItem);
             yield return task.AsIEnumeratorReturnNullDontThrow();
 
             Assert.IsTrue(task.IsFaulted, "The item is updated, item id: " + virtualItem.id);
@@ -114,7 +114,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 "3ddc10ae-8a04-4f9f-9cf5-fc5b0e6b4cb8"
             };
 
-            var task = VirtualItemModule.I.GetVirtualItemsByIdsAsync(ids);
+            var task = VirtualItemsModule.I.GetVirtualItemsByIdsAsync(ids);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -141,7 +141,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 "non_existing_item_two"
             };
 
-            var task = VirtualItemModule.I.GetVirtualItemsByIdsAsync(ids);
+            var task = VirtualItemsModule.I.GetVirtualItemsByIdsAsync(ids);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -170,7 +170,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 "3ddc10ae-8a04-4f9f-9cf5-fc5b0e6b4cb8"
             };
 
-            var task = VirtualItemModule.I.GetVirtualItemsByIdsAsync(ids);
+            var task = VirtualItemsModule.I.GetVirtualItemsByIdsAsync(ids);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -192,7 +192,7 @@ namespace RGN.VirtualItems.Tests.Runtime
         {
             yield return LoginAsNormalTester();
 
-            var task = VirtualItemModule.I.GetVirtualItemsAsync();
+            var task = VirtualItemsModule.I.GetVirtualItemsAsync();
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -219,7 +219,7 @@ namespace RGN.VirtualItems.Tests.Runtime
                 "io.test.test"
             };
 
-            var task = VirtualItemModule.I.GetAllVirtualItemsByAppIdsAsync(appIds, 1000);
+            var task = VirtualItemsModule.I.GetAllVirtualItemsByAppIdsAsync(appIds, 1000);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -242,7 +242,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             
             var tagsToFind = new[] { "tagToFind" };
             
-            var getVirtualItemsByTagsTask = VirtualItemModule.I.GetByTagsAsync(tagsToFind);
+            var getVirtualItemsByTagsTask = VirtualItemsModule.I.GetByTagsAsync(tagsToFind);
             yield return getVirtualItemsByTagsTask.AsIEnumeratorReturnNull();
             var getVirtualItemsByTagsResult = getVirtualItemsByTagsTask.Result;
             
@@ -268,9 +268,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             // specially created item for tests
             var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
 
-            var virtualItemModule = VirtualItemModule.I;
-
-            var getVirtualItemTagsTask = virtualItemModule.GetTagsAsync(virtualItemId);
+            var getVirtualItemTagsTask = VirtualItemsModule.I.GetTagsAsync(virtualItemId);
             yield return getVirtualItemTagsTask.AsIEnumeratorReturnNull();
             var getVirtualItemTagsResult = getVirtualItemTagsTask.Result;
 
@@ -290,12 +288,10 @@ namespace RGN.VirtualItems.Tests.Runtime
             };
             string appId = "io.getready.rgntest";
 
-            var virtualItemModule = VirtualItemModule.I;
-
-            var setTagsTask = virtualItemModule.SetTagsAsync(virtualItemId, newTags, appId);
+            var setTagsTask = VirtualItemsModule.I.SetTagsAsync(virtualItemId, newTags, appId);
             yield return setTagsTask.AsIEnumeratorReturnNull();
 
-            var getVirtualItemTagsTask = virtualItemModule.GetTagsAsync(virtualItemId);
+            var getVirtualItemTagsTask = VirtualItemsModule.I.GetTagsAsync(virtualItemId);
             yield return getVirtualItemTagsTask.AsIEnumeratorReturnNull();
             var getVirtualItemTagsResult = getVirtualItemTagsTask.Result;
 
@@ -327,12 +323,10 @@ namespace RGN.VirtualItems.Tests.Runtime
             var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
             var newName = "Name" + UnityEngine.Random.Range(0, 1000);
 
-            var virtualItemModule = VirtualItemModule.I;
-
-            var setNameTask = virtualItemModule.SetNameAsync(virtualItemId, newName);
+            var setNameTask = VirtualItemsModule.I.SetNameAsync(virtualItemId, newName);
             yield return setNameTask.AsIEnumeratorReturnNull();
 
-            var getVirtualItemsTask = virtualItemModule.GetVirtualItemsByIdsAsync(new List<string> { virtualItemId });
+            var getVirtualItemsTask = VirtualItemsModule.I.GetVirtualItemsByIdsAsync(new List<string> { virtualItemId });
             yield return getVirtualItemsTask.AsIEnumeratorReturnNull();
             var getVirtualItemsResult = getVirtualItemsTask.Result;
 
@@ -350,12 +344,10 @@ namespace RGN.VirtualItems.Tests.Runtime
             var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
             var newDescription = "Description" + UnityEngine.Random.Range(0, 1000);
 
-            var virtualItemModule = VirtualItemModule.I;
-
-            var setDescriptionTask = virtualItemModule.SetDescriptionAsync(virtualItemId, newDescription);
+            var setDescriptionTask = VirtualItemsModule.I.SetDescriptionAsync(virtualItemId, newDescription);
             yield return setDescriptionTask.AsIEnumeratorReturnNull();
 
-            var getVirtualItemsTask = virtualItemModule.GetVirtualItemsByIdsAsync(new List<string> { virtualItemId });
+            var getVirtualItemsTask = VirtualItemsModule.I.GetVirtualItemsByIdsAsync(new List<string> { virtualItemId });
             yield return getVirtualItemsTask.AsIEnumeratorReturnNull();
             var getVirtualItemsResult = getVirtualItemsTask.Result;
 
@@ -372,7 +364,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
             var propertiesToSet = "{}";
 
-            var task = VirtualItemModule.I.SetPropertiesAsync(virtualItemId, propertiesToSet);
+            var task = VirtualItemsModule.I.SetPropertiesAsync(virtualItemId, propertiesToSet);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -389,7 +381,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
             var expectedProperties = "{}";
 
-            var task = VirtualItemModule.I.GetPropertiesAsync(virtualItemId);
+            var task = VirtualItemsModule.I.GetPropertiesAsync(virtualItemId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -404,7 +396,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             yield return LoginAsNormalTester();
 
             var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
-            var task = VirtualItemModule.I.DownloadThumbnailAsync<Texture2D>(virtualItemId);
+            var task = VirtualItemsModule.I.DownloadThumbnailAsync<Texture2D>(virtualItemId);
             yield return task.AsIEnumeratorReturnNull();
 
             Texture2D result = task.Result;
