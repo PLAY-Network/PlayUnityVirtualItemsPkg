@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using Firebase;
 using Firebase.Functions;
 using RGN.Modules.VirtualItems;
@@ -10,6 +11,7 @@ namespace MyEditor
 {
     public class AddVirtualItemEditorWindow : EditorWindow
     {
+
         private FirebaseApp _firebaseApp;
 
         private VirtualItem _newVirtualItem;
@@ -86,3 +88,5 @@ namespace MyEditor
         }
     }
 }
+#endif
+
