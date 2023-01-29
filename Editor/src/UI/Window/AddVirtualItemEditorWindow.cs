@@ -17,12 +17,14 @@ namespace MyEditor
         private VirtualItem _newVirtualItem;
         private bool _asyncOperationIsRunning;
 
+#if READY_DEVELOPMENT
         [MenuItem("ReadyGamesNetwork/Window/Add Virtual Item")]
         private static void Init()
         {
             AddVirtualItemEditorWindow window = (AddVirtualItemEditorWindow)EditorWindow.GetWindow(typeof(AddVirtualItemEditorWindow));
             window.Show();
         }
+#endif
 
         private void OnGUI()
         {
