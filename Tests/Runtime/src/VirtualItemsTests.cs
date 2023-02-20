@@ -241,7 +241,7 @@ namespace RGN.VirtualItems.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var tagsToFind = new[] { "tagToFind" };
+            var tagsToFind = new List<string> { "tagToFind" };
             
             var getVirtualItemsByTagsTask = VirtualItemsModule.I.GetByTagsAsync(tagsToFind);
             yield return getVirtualItemsByTagsTask.AsIEnumeratorReturnNull();
@@ -283,7 +283,7 @@ namespace RGN.VirtualItems.Tests.Runtime
 
             // specially created item for tests
             var virtualItemId = "ed589211-466b-4d87-9c94-e6ba03a10765";
-            var newTags = new[]
+            var newTags = new List<string>
             {
                 "tag1" + UnityEngine.Random.Range(0, 1000),
             };
@@ -296,10 +296,10 @@ namespace RGN.VirtualItems.Tests.Runtime
             yield return getVirtualItemTagsTask.AsIEnumeratorReturnNull();
             var getVirtualItemTagsResult = getVirtualItemTagsTask.Result;
 
-            var tagsAreEqual = newTags.Length == getVirtualItemTagsResult.tags.Length;
+            var tagsAreEqual = newTags.Count == getVirtualItemTagsResult.tags.Count;
             if (tagsAreEqual)
             {
-                for (var i = 0; i < newTags.Length; i++)
+                for (var i = 0; i < newTags.Count; i++)
                 {
                     string expectedTag = $"{newTags[i]}_{appId}";
                     string actualTag = getVirtualItemTagsResult.tags[i];
