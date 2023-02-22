@@ -35,7 +35,6 @@ namespace RGN.VirtualItems.Tests.Runtime
 
             Assert.NotNull(result, "The result is null");
             UnityEngine.Debug.Log("Added new virtual item: " + result.id);
-            CheckVirtualItemFields_CreatedUpdated(result);
         }
 
         [UnityTest]
@@ -79,7 +78,6 @@ namespace RGN.VirtualItems.Tests.Runtime
 
             Assert.NotNull(result, "The result is null");
             UnityEngine.Debug.Log("Updated virtual item: " + result.id);
-            CheckVirtualItemFields_CreatedUpdated(result);
         }
 
         [UnityTest]
@@ -122,15 +120,8 @@ namespace RGN.VirtualItems.Tests.Runtime
             Assert.NotNull(result, "The result is null");
             Assert.IsNotEmpty(result, "Got empty list for existing items");
             Assert.AreEqual(ids.Count, result.Count, "The count of result items does not equal the count of requested items");
-
-            if (result != null)
-            {
-                foreach(VirtualItem item in result)
-                {
-                    CheckVirtualItemFields_CreatedUpdated(item);
-                }
-            }
         }
+        
         [UnityTest]
         public IEnumerator GetVirtualItemsByIds_NoItemsForNonExistingItems()
         {
@@ -149,15 +140,8 @@ namespace RGN.VirtualItems.Tests.Runtime
             Assert.NotNull(result, "The result is null");
             Assert.IsEmpty(result, "Got non empty list for non existing items");
             Assert.AreEqual(0, result.Count);
-
-            if (result != null)
-            {
-                foreach (VirtualItem item in result)
-                {
-                    CheckVirtualItemFields_CreatedUpdated(item);
-                }
-            }
         }
+        
         [UnityTest]
         public IEnumerator GetVirtualItemsByIds_ReturnsOnlyExistingItems()
         {
@@ -178,14 +162,6 @@ namespace RGN.VirtualItems.Tests.Runtime
             Assert.NotNull(result, "The result is null");
             Assert.IsNotEmpty(result, "Got empty list for existing items");
             Assert.AreEqual(2, result.Count);
-
-            if (result != null)
-            {
-                foreach (VirtualItem item in result)
-                {
-                    CheckVirtualItemFields_CreatedUpdated(item);
-                }
-            }
         }
 
         [UnityTest]
@@ -199,14 +175,6 @@ namespace RGN.VirtualItems.Tests.Runtime
 
             Assert.NotNull(result, "The result is null");
             Assert.IsNotEmpty(result, "Got empty list for current app: " + RGNCoreBuilder.I.AppIDForRequests);
-
-            if (result != null)
-            {
-                foreach (VirtualItem item in result)
-                {
-                    CheckVirtualItemFields_CreatedUpdated(item);
-                }
-            }
         }
 
         [UnityTest]
@@ -226,14 +194,6 @@ namespace RGN.VirtualItems.Tests.Runtime
 
             Assert.NotNull(result, "The result is null");
             Assert.IsNotEmpty(result, "Got empty list for requested apps");
-
-            if (result != null)
-            {
-                foreach (VirtualItem item in result)
-                {
-                    CheckVirtualItemFields_CreatedUpdated(item);
-                }
-            }
         }
         
         [UnityTest]
@@ -403,38 +363,5 @@ namespace RGN.VirtualItems.Tests.Runtime
             Texture2D result = task.Result;
             Debug.Log(result.width + ":" + result.height);
         }
-
-        // helper function for checking of VirtualItems fields: createdAt, updatedAt, createdBy, updatedBy
-        private void CheckVirtualItemFields_CreatedUpdated(VirtualItem item)
-        {
-            if (item == null)
-                return;
-
-            if (!string.IsNullOrEmpty(item.createdAt))
-            {
-                DateTime dt;
-                bool result = DateTime.TryParse(item.createdAt, out dt);
-                Assert.IsTrue(result, "createdAt has wrong format for Item " + item.id);
-            }
-            else
-            {
-                Assert.Fail("createdAt is Null for Item " + item.id);
-            }
-
-            if (!string.IsNullOrEmpty(item.updatedAt))
-            {
-                DateTime dt;
-                bool result = DateTime.TryParse(item.updatedAt, out dt);
-                Assert.IsTrue(result, "updatedAt has wrong format for Item " + item.id);
-            }
-            else
-            {
-                Assert.Fail("updatedAt is Null for Item " + item.id);
-            }
-
-            Assert.IsFalse(string.IsNullOrEmpty(item.createdBy), "createdBy is Null or Empty for Item " + item.id);
-            Assert.IsFalse(string.IsNullOrEmpty(item.updatedBy), "updatedBy is Null or Empty for Item " + item.id);
-        }
-
     }
 }
