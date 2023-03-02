@@ -322,7 +322,7 @@ namespace RGN.VirtualItems.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
-            var virtualItemId = "hKT6EYuH9XjwQjinBrnl";
+            var virtualItemId = "3tHFcBKBTy7LT7Ba8PbN";
             var propertiesToSet = "{}";
 
             var task = VirtualItemsModule.I.SetPropertiesAsync(virtualItemId, propertiesToSet);
@@ -352,7 +352,7 @@ namespace RGN.VirtualItems.Tests.Runtime
         {
             yield return LoginAsNormalTester();
 
-            var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
+            var virtualItemId = "3tHFcBKBTy7LT7Ba8PbN";
             var expectedProperties = "{}";
 
             var task = VirtualItemsModule.I.GetPropertiesAsync(virtualItemId);
