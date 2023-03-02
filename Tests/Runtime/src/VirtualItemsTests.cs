@@ -322,7 +322,7 @@ namespace RGN.VirtualItems.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
-            var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
+            var virtualItemId = "hKT6EYuH9XjwQjinBrnl";
             var propertiesToSet = "{}";
 
             var task = VirtualItemsModule.I.SetPropertiesAsync(virtualItemId, propertiesToSet);
@@ -332,6 +332,19 @@ namespace RGN.VirtualItems.Tests.Runtime
             Assert.NotNull(result, "The result is null");
             Assert.AreEqual(propertiesToSet, result);
             UnityEngine.Debug.Log(result);
+        }
+        [UnityTest]
+        public IEnumerator SetProperties_DoesNotAllowToSetPropertiesForAnotherApp()
+        {
+            yield return LoginAsAdminTester();
+
+            var virtualItemId = "ln1OtyoK0GV9utHP1Oqv";
+            var propertiesToSet = "{}";
+
+            var task = VirtualItemsModule.I.SetPropertiesAsync(virtualItemId, propertiesToSet);
+            yield return task.AsIEnumeratorReturnNullDontThrow();
+
+            Assert.IsTrue(task.IsFaulted, "It was possible to set properties for another app, virtual item id: " + virtualItemId);
         }
 
         [UnityTest]
@@ -350,6 +363,18 @@ namespace RGN.VirtualItems.Tests.Runtime
             Assert.AreEqual(expectedProperties, result);
             UnityEngine.Debug.Log(result);
         }
+        [UnityTest]
+        public IEnumerator GetProperties_DoesNotReturnPropertiesForAnotherApp()
+        {
+            yield return LoginAsNormalTester();
+
+            var virtualItemId = "hKT6EYuH9XjwQjinBrnl";
+
+            var task = VirtualItemsModule.I.GetPropertiesAsync(virtualItemId);
+            yield return task.AsIEnumeratorReturnNullDontThrow();
+
+            Assert.IsTrue(task.IsFaulted, "It was possible to get the properties for another app, virtual item id: " + virtualItemId);
+        }
 
         // TODO: [UnityTest]
         public IEnumerator DownloadVirtualItemThumbnail_CastToUnityTexture2DWorks()
@@ -357,7 +382,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             yield return LoginAsNormalTester();
 
             var virtualItemId = "92c7067d-cb58-4f3d-a545-36faf409d64c";
-            var task = VirtualItemsModule.I.DownloadThumbnailAsync<Texture2D>(virtualItemId);
+            var task = VirtualItemsModule.I.DownloadImageAsync<Texture2D>(virtualItemId);
             yield return task.AsIEnumeratorReturnNull();
 
             Texture2D result = task.Result;
