@@ -203,14 +203,14 @@ namespace RGN.VirtualItems.Tests.Runtime
             
             var tagsToFind = new List<string> { "tagToFind" };
             
-            var getVirtualItemsByTagsTask = VirtualItemsModule.I.GetByTagsAsync(tagsToFind);
+            var getVirtualItemsByTagsTask = VirtualItemsModule.I.GetByTagsAsync(tagsToFind, "io.getready.rgntest");
             yield return getVirtualItemsByTagsTask.AsIEnumeratorReturnNull();
             var getVirtualItemsByTagsResult = getVirtualItemsByTagsTask.Result;
             
             Assert.IsNotEmpty(getVirtualItemsByTagsResult);
 
             var areVirtualItemsTagsCorrect =
-                tagsToFind.Any(x => getVirtualItemsByTagsResult[0].tags.Contains(x));
+                tagsToFind.Any(x => getVirtualItemsByTagsResult[0].tags.Contains(x + "_" + "io.getready.rgntest"));
 
             Assert.True(areVirtualItemsTagsCorrect, "Retrieved virtual items doesn't contains any requested tag");
 
