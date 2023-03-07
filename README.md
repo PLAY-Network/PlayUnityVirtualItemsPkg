@@ -1,1 +1,2 @@
-# RGN Virtual Items
+# RGN Virtual Items# RGN VirtualItems
+version: 0.1.0-dev.105
