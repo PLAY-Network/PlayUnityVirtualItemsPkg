@@ -1,8 +1,8 @@
-using System;
-using System.Globalization;
 using RGN.Modules.VirtualItems;
+using RGN.Utility;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RGN.Samples
 {
@@ -13,6 +13,8 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _updatedAtText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
 
+        [SerializeField] private Button _openVirtualItemScreenButton;
+
         private VirtualItem _virtualItem;
         private bool _disposed = false;
 
@@ -21,22 +23,9 @@ namespace RGN.Samples
             _virtualItem = virtualItem;
             _rectTransform.localPosition = new Vector3(0, -index * GetHeight(), 0);
             _nameText.text = virtualItem.name;
-            _updatedAtText.text = DateTimeToISOLikeStringNoMilliseconds(UnixTimeStampToDateTime(virtualItem.updatedAt));
+            _updatedAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.updatedAt);
             _descriptionText.text = virtualItem.description;
-        }
-        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
-        {
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
-            return dateTime;
-        }
-        public static string DateTimeToISOString(DateTime dateTime)
-        {
-            return dateTime.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz", CultureInfo.InvariantCulture);
-        }
-        public static string DateTimeToISOLikeStringNoMilliseconds(DateTime dateTime)
-        {
-            return dateTime.ToString("yyyy-MM-ddTHH\\:mm\\:ss", CultureInfo.InvariantCulture);
+            _openVirtualItemScreenButton.onClick.AddListener(OnOpenVirtualItemScreenButtonClick);
         }
         public void Dispose()
         {
@@ -48,12 +37,18 @@ namespace RGN.Samples
         }
         private void OnDestroy()
         {
+            _openVirtualItemScreenButton.onClick.RemoveListener(OnOpenVirtualItemScreenButtonClick);
             _disposed = true;
         }
 
         internal float GetHeight()
         {
             return _rectTransform.sizeDelta.y;
+        }
+
+        private void OnOpenVirtualItemScreenButtonClick()
+        {
+            Debug.Log("OnOpenVirtualItemScreenButtonClick");
         }
     }
 }
