@@ -1,9 +1,9 @@
-using UnityEngine;
-using RGN.Impl.Firebase;
-using RGN.UI;
 using System.Collections.Generic;
-using RGN.Modules.VirtualItems;
 using System.Threading.Tasks;
+using RGN.Impl.Firebase;
+using RGN.Modules.VirtualItems;
+using RGN.UI;
+using UnityEngine;
 
 namespace RGN.Samples
 {
@@ -13,6 +13,7 @@ namespace RGN.Samples
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _scrollContentRectTrasform;
         [SerializeField] private PullToRefresh _pullToRefresh;
+        [SerializeField] private RGNButton _loadMoreItemsButton;
 
         [SerializeField] private VirtualItemUI _virtualItemPrefab;
 
@@ -24,11 +25,13 @@ namespace RGN.Samples
             base.PreInit(rgnFrame);
             _virtualItems = new List<VirtualItemUI>();
             _pullToRefresh.RefreshRequested += ReloadVirtualItemsAsync;
+            _loadMoreItemsButton.Button.onClick.AddListener(OnLoadMoreItemsButtonAsync);
         }
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             _pullToRefresh.RefreshRequested -= ReloadVirtualItemsAsync;
+            _loadMoreItemsButton.Button.onClick.RemoveListener(OnLoadMoreItemsButtonAsync);
         }
 
         protected override async void OnShow()
@@ -46,20 +49,10 @@ namespace RGN.Samples
             _fullScreenLoadingIndicator.SetEnabled(!interactable);
         }
 
-        private async Task ReloadVirtualItemsAsync()
+        private Task ReloadVirtualItemsAsync()
         {
             DisposeVirtualItems();
-            SetUIInteractable(false);
-            var virtualItems = await VirtualItemsModule.I.GetVirtualItemsAsync(20);
-            for (int i = 0; i < virtualItems.Count; ++i)
-            {
-                VirtualItemUI ui = Instantiate(_virtualItemPrefab, _scrollContentRectTrasform);
-                ui.Init(i, virtualItems[i]);
-                _virtualItems.Add(ui);
-            }
-            Vector2 sizeDelta = _scrollContentRectTrasform.sizeDelta;
-            _scrollContentRectTrasform.sizeDelta = new Vector2(sizeDelta.x, virtualItems.Count * _virtualItemPrefab.GetHeight());
-            SetUIInteractable(true);
+            return LoadItemsAsync(string.Empty);
         }
         private void DisposeVirtualItems()
         {
@@ -72,6 +65,32 @@ namespace RGN.Samples
                 _virtualItems[i].Dispose();
             }
             _virtualItems.Clear();
+        }
+        private async void OnLoadMoreItemsButtonAsync()
+        {
+            string lastLoadedVirtualItemId = string.Empty;
+            if (_virtualItems.Count > 0)
+            {
+                lastLoadedVirtualItemId = _virtualItems[_virtualItems.Count - 1].Id;
+            }
+            await LoadItemsAsync(lastLoadedVirtualItemId);
+        }
+        private async Task LoadItemsAsync(string startAfter)
+        {
+            SetUIInteractable(false);
+            var virtualItems = await VirtualItemsModule.I.GetVirtualItemsAsync(20, startAfter);
+            for (int i = 0; i < virtualItems.Count; ++i)
+            {
+                VirtualItemUI ui = Instantiate(_virtualItemPrefab, _scrollContentRectTrasform);
+                ui.Init(_virtualItems.Count, virtualItems[i]);
+                _virtualItems.Add(ui);
+            }
+            float loadMoreItemsButtonPos = _virtualItems.Count * _virtualItemPrefab.GetHeight();
+            _loadMoreItemsButton.RectTransform.anchoredPosition = new Vector2(0, -loadMoreItemsButtonPos);
+            float loadMoreItemsButtonHeight = _loadMoreItemsButton.GetHeight();
+            Vector2 sizeDelta = _scrollContentRectTrasform.sizeDelta;
+            _scrollContentRectTrasform.sizeDelta = new Vector2(sizeDelta.x, loadMoreItemsButtonPos + loadMoreItemsButtonHeight);
+            SetUIInteractable(true);
         }
     }
 }
