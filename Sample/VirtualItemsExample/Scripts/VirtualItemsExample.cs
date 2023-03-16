@@ -78,11 +78,12 @@ namespace RGN.Samples
         private async Task LoadItemsAsync(string startAfter)
         {
             SetUIInteractable(false);
+            _triedToLoad = true;
             var virtualItems = await VirtualItemsModule.I.GetVirtualItemsAsync(20, startAfter);
             for (int i = 0; i < virtualItems.Count; ++i)
             {
                 VirtualItemUI ui = Instantiate(_virtualItemPrefab, _scrollContentRectTrasform);
-                ui.Init(_virtualItems.Count, virtualItems[i]);
+                ui.Init(_rgnFrame, _virtualItems.Count, virtualItems[i]);
                 _virtualItems.Add(ui);
             }
             float loadMoreItemsButtonPos = _virtualItems.Count * _virtualItemPrefab.GetHeight();

@@ -11,20 +11,26 @@ namespace RGN.Samples
         public string Id { get => _virtualItem.id; }
 
         [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private TextMeshProUGUI _idText;
         [SerializeField] private TextMeshProUGUI _nameText;
+        [SerializeField] private TextMeshProUGUI _createdAtText;
         [SerializeField] private TextMeshProUGUI _updatedAtText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
 
         [SerializeField] private Button _openVirtualItemScreenButton;
 
+        private Impl.Firebase.IRGNFrame _rgnFrame;
         private VirtualItem _virtualItem;
         private bool _disposed = false;
 
-        internal void Init(int index, VirtualItem virtualItem)
+        internal void Init(Impl.Firebase.IRGNFrame rgnFrame, int index, VirtualItem virtualItem)
         {
+            _rgnFrame = rgnFrame;
             _virtualItem = virtualItem;
             _rectTransform.localPosition = new Vector3(0, -index * GetHeight(), 0);
+            _idText.text = virtualItem.id;
             _nameText.text = virtualItem.name;
+            _createdAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.createdAt);
             _updatedAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.updatedAt);
             _descriptionText.text = virtualItem.description;
             _openVirtualItemScreenButton.onClick.AddListener(OnOpenVirtualItemScreenButtonClick);
@@ -50,7 +56,7 @@ namespace RGN.Samples
 
         private void OnOpenVirtualItemScreenButtonClick()
         {
-            Debug.Log("OnOpenVirtualItemScreenButtonClick");
+            _rgnFrame.OpenScreen<VirtualItemScreen>(_virtualItem);
         }
     }
 }
