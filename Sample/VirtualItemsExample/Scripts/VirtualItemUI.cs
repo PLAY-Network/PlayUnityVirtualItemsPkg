@@ -8,6 +8,8 @@ namespace RGN.Samples
 {
     internal sealed class VirtualItemUI : MonoBehaviour, System.IDisposable
     {
+        public string Id { get => _virtualItem.id; }
+
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private TextMeshProUGUI _nameText;
         [SerializeField] private TextMeshProUGUI _updatedAtText;
