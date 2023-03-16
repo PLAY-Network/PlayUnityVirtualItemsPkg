@@ -12,6 +12,7 @@ namespace RGN.Samples
         [SerializeField] private LoadingIndicator _fullScreenLoadingIndicator;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _scrollContentRectTrasform;
+        [SerializeField] private PullToRefresh _pullToRefresh;
 
         [SerializeField] private VirtualItemUI _virtualItemPrefab;
 
@@ -22,10 +23,12 @@ namespace RGN.Samples
         {
             base.PreInit(rgnFrame);
             _virtualItems = new List<VirtualItemUI>();
+            _pullToRefresh.RefreshRequested += ReloadVirtualItemsAsync;
         }
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
+            _pullToRefresh.RefreshRequested -= ReloadVirtualItemsAsync;
         }
 
         protected override async void OnShow()
@@ -47,7 +50,7 @@ namespace RGN.Samples
         {
             DisposeVirtualItems();
             SetUIInteractable(false);
-            var virtualItems = await VirtualItemsModule.I.GetVirtualItemsAsync();
+            var virtualItems = await VirtualItemsModule.I.GetVirtualItemsAsync(20);
             for (int i = 0; i < virtualItems.Count; ++i)
             {
                 VirtualItemUI ui = Instantiate(_virtualItemPrefab, _scrollContentRectTrasform);

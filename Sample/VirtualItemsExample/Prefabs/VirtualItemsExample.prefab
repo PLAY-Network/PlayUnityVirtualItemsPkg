@@ -249,6 +249,7 @@ MonoBehaviour:
   _fullScreenLoadingIndicator: {fileID: 8553554138064028298}
   _canvasGroup: {fileID: 2334407460805797386}
   _scrollContentRectTrasform: {fileID: 1702133194430926968}
+  _pullToRefresh: {fileID: 6779389981079887834}
   _virtualItemPrefab: {fileID: 5529452716335703494, guid: cf6384399f459e749825aae6e59b24ef, type: 3}
 --- !u!225 &2334407460805797386
 CanvasGroup:
@@ -307,6 +308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8553498998523591291}
   - component: {fileID: 1727683905528896946}
+  - component: {fileID: 6779389981079887834}
   m_Layer: 5
   m_Name: VirtualItemsScrollView
   m_TagString: Untagged
@@ -364,6 +366,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6779389981079887834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175864360932557556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f86eb251fccdc9f4ca8139e0696465c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reloadImagePrefab: {fileID: 5322230921392865710, guid: 9a8c25b81392f83478434c81b478f346, type: 3}
+  _refreshDistance: 100
 --- !u!1001 &2334407460388972900
 PrefabInstance:
   m_ObjectHideFlags: 0

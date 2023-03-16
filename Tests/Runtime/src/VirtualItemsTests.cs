@@ -178,17 +178,11 @@ namespace RGN.VirtualItems.Tests.Runtime
         }
 
         [UnityTest]
-        public IEnumerator GetAllVirtualItemsByAppIds_ReturnsItemsForRequestedApps()
+        public IEnumerator GetVirtualItemsAsync_ReturnsItemsForCurrentApp()
         {
             yield return LoginAsNormalTester();
 
-            List<string> appIds = new List<string>()
-            {
-                "io.getready.rgntest",
-                "io.test.test"
-            };
-
-            var task = VirtualItemsModule.I.GetAllVirtualItemsByAppIdsAsync(appIds, 1000);
+            var task = VirtualItemsModule.I.GetVirtualItemsAsync(1000);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
