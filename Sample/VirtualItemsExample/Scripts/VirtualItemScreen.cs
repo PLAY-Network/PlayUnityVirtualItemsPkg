@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using RGN.Impl.Firebase;
+using RGN.Modules.Store;
 using RGN.Modules.VirtualItems;
 using RGN.UI;
 using RGN.Utility;
@@ -27,12 +28,18 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _isStackableText;
         [SerializeField] private LoadingIndicator _fullScreenLoadingIndicator;
         [SerializeField] private IconImage _virtualItemIconImage;
+        [SerializeField] private RectTransform _scrollRectContent;
+        [SerializeField] private RectTransform _buyButtonsAnchor;
+
+        [SerializeField] private RGNButton _actionButtonForBuyPrefab;
 
         private VirtualItem _virtualItem;
+        private List<RGNButton> _buyButtons;
 
         public override void PreInit(IRGNFrame rgnFrame)
         {
             base.PreInit(rgnFrame);
+            _buyButtons = new List<RGNButton>();
             _virtualItemIconImage.OnClick.AddListener(OnUploadNewProfilePictureButtonClickAsync);
         }
         protected override void Dispose(bool disposing)
@@ -61,6 +68,7 @@ namespace RGN.Samples
             _appIdsText.text = BuildStringFromStringsList(virtualItem.appIds, "app ids");
             _childIdsText.text = BuildStringFromStringsList(virtualItem.childs, "virtual item childs");
             _propertiesText.text = BuildStringFromPropertiesList(virtualItem.properties);
+            InstantiateBuyButtonsForEachPrice(virtualItem.id, virtualItem.prices);
             _fullScreenLoadingIndicator.SetEnabled(false);
             await LoadIconImageAsync(_virtualItem.id, false);
         }
@@ -159,7 +167,7 @@ namespace RGN.Samples
                 return "No properties set";
             }
             var sb = new System.Text.StringBuilder();
-            for (int i = 0; i < properties.Count; i++)
+            for (int i = 0; i < properties.Count; ++i)
             {
                 var property = properties[i];
                 sb.Append("Properties for apps: ");
@@ -168,6 +176,36 @@ namespace RGN.Samples
                 sb.AppendLine(string.IsNullOrWhiteSpace(property.json) ? "empty json" : property.json);
             }
             return sb.ToString();
+        }
+        private void InstantiateBuyButtonsForEachPrice(string virtualItemId, List<PriceInfo> priceInfos)
+        {
+            if (priceInfos == null || priceInfos.Count == 0)
+            {
+                return;
+            }
+            float pricesTitleTextPosition = _buyButtonsAnchor.localPosition.y;
+            for (int i = 0; i < priceInfos.Count; ++i)
+            {
+                var priceInfo = priceInfos[i];
+                RGNButton button = Instantiate(_actionButtonForBuyPrefab, _scrollRectContent);
+                button.RectTransform.pivot = Vector2.up;
+                button.RectTransform.localPosition = new Vector2(
+                    16,
+                    (i * _actionButtonForBuyPrefab.GetHeight() ) + pricesTitleTextPosition);
+                button.ButtonText.text = 
+                    $"<s>{priceInfo.quantityWithoutDiscount}</s> {priceInfo.quantity} {priceInfo.name}";
+                button.Button.onClick.AddListener(async () => {
+                    _canvasGroup.interactable = false;
+                    _fullScreenLoadingIndicator.SetEnabled(true);
+                    await StoreModule.I.BuyVirtualItemsAsync(
+                        new List<string>() { virtualItemId },
+                        new List<string>() { priceInfo.name } );
+                    _fullScreenLoadingIndicator.SetEnabled(false);
+                    _canvasGroup.interactable = true;
+                    ToastMessage.I.ShowSuccess("Successfully purchased virtual item with id: " + virtualItemId);
+                    });
+                _buyButtons.Add(button);
+            }
         }
     }
 }
