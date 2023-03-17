@@ -1,15 +1,17 @@
+using System.IO;
+using System.Threading.Tasks;
 using RGN.Impl.Firebase;
 using RGN.Modules.VirtualItems;
 using RGN.UI;
 using RGN.Utility;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RGN.Samples
 {
     public sealed class VirtualItemScreen : IUIScreen
     {
+        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private TextMeshProUGUI _idText;
@@ -18,21 +20,25 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _createdByText;
         [SerializeField] private TextMeshProUGUI _updatedByText;
         [SerializeField] private TextMeshProUGUI _isStackableText;
-        [SerializeField] private RawImage _virtualItemIconRawImage;
         [SerializeField] private LoadingIndicator _fullScreenLoadingIndicator;
+        [SerializeField] private IconImage _virtualItemIconImage;
 
+        private VirtualItem _virtualItem;
 
         public override void PreInit(IRGNFrame rgnFrame)
         {
             base.PreInit(rgnFrame);
+            _virtualItemIconImage.OnClick.AddListener(OnUploadNewProfilePictureButtonClickAsync);
         }
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
+            _virtualItemIconImage.OnClick.RemoveListener(OnUploadNewProfilePictureButtonClickAsync);
         }
-        public override void OnWillAppearNow(object parameters)
+        public override async void OnWillAppearNow(object parameters)
         {
             VirtualItem virtualItem = parameters as VirtualItem;
+            _virtualItem = virtualItem;
             if (virtualItem == null)
             {
                 Debug.LogError("The provided virtual item is null or invalid");
@@ -47,6 +53,77 @@ namespace RGN.Samples
             _updatedByText.text = virtualItem.updatedBy;
             _isStackableText.text = virtualItem.isStackable ? "Item is stackable" : "Item is not stackable";
             _fullScreenLoadingIndicator.SetEnabled(false);
+            await LoadIconImageAsync(_virtualItem.id, false);
+        }
+
+        private async Task LoadIconImageAsync(string virtualItemId, bool tryToloadFromCache)
+        {
+            _canvasGroup.interactable = false;
+            _virtualItemIconImage.SetLoading(true);
+            string localPath = Path.Combine(Application.persistentDataPath, "virtual_items", virtualItemId + ".png");
+            Texture2D image = null;
+            if (tryToloadFromCache)
+            {
+                if (File.Exists(localPath))
+                {
+                    byte[] bytes = File.ReadAllBytes(localPath);
+                    image = new Texture2D(1, 1);
+                    image.LoadImage(bytes);
+                    image.Apply();
+                }
+            }
+            if (image == null)
+            {
+                byte[] bytes = await VirtualItemsModule.I.DownloadImageAsync(virtualItemId);
+
+                if (bytes != null)
+                {
+                    image = new Texture2D(1, 1);
+                    image.LoadImage(bytes);
+                    image.Apply();
+                    Directory.CreateDirectory(Path.GetDirectoryName(localPath));
+                    File.WriteAllBytes(localPath, bytes);
+                }
+            }
+            _virtualItemIconImage.SetProfileTexture(image);
+            _canvasGroup.interactable = true;
+            _virtualItemIconImage.SetLoading(false);
+        }
+        private async void OnUploadNewProfilePictureButtonClickAsync()
+        {
+            _canvasGroup.interactable = false;
+            _fullScreenLoadingIndicator.SetEnabled(true);
+            var tcs = new TaskCompletionSource<bool>();
+            NativeGallery.GetImageFromGallery(async path => {
+                try
+                {
+                    if (path == null)
+                    {
+                        Debug.Log("User cancelled the image upload, or no permission granted");
+                        tcs.TrySetResult(false);
+                        return;
+                    }
+                    if (!File.Exists(path))
+                    {
+                        Debug.LogError("File does not exist at path: " + path);
+                        tcs.TrySetResult(false);
+                        return;
+                    }
+                    byte[] textureBytes = File.ReadAllBytes(path);
+                    await VirtualItemsModule.I.UploadImageAsync(_virtualItem.id, textureBytes);
+                    await LoadIconImageAsync(_virtualItem.id, false);
+                    tcs.TrySetResult(true);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogException(ex);
+                    tcs.TrySetException(ex);
+                }
+            },
+            "Select Virtual Item Image");
+            await tcs.Task;
+            _fullScreenLoadingIndicator.SetEnabled(false);
+            _canvasGroup.interactable = true;
         }
     }
 }
