@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using RGN.Impl.Firebase;
@@ -19,6 +20,10 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _updatedAtText;
         [SerializeField] private TextMeshProUGUI _createdByText;
         [SerializeField] private TextMeshProUGUI _updatedByText;
+        [SerializeField] private TextMeshProUGUI _tagsText;
+        [SerializeField] private TextMeshProUGUI _appIdsText;
+        [SerializeField] private TextMeshProUGUI _childIdsText;
+        [SerializeField] private TextMeshProUGUI _propertiesText;
         [SerializeField] private TextMeshProUGUI _isStackableText;
         [SerializeField] private LoadingIndicator _fullScreenLoadingIndicator;
         [SerializeField] private IconImage _virtualItemIconImage;
@@ -52,6 +57,10 @@ namespace RGN.Samples
             _createdByText.text = virtualItem.createdBy;
             _updatedByText.text = virtualItem.updatedBy;
             _isStackableText.text = virtualItem.isStackable ? "Item is stackable" : "Item is not stackable";
+            _tagsText.text = BuildStringFromStringsList(virtualItem.tags, "tags");
+            _appIdsText.text = BuildStringFromStringsList(virtualItem.appIds, "app ids");
+            _childIdsText.text = BuildStringFromStringsList(virtualItem.childs, "virtual item childs");
+            _propertiesText.text = BuildStringFromPropertiesList(virtualItem.properties);
             _fullScreenLoadingIndicator.SetEnabled(false);
             await LoadIconImageAsync(_virtualItem.id, false);
         }
@@ -124,6 +133,41 @@ namespace RGN.Samples
             await tcs.Task;
             _fullScreenLoadingIndicator.SetEnabled(false);
             _canvasGroup.interactable = true;
+        }
+
+        private string BuildStringFromStringsList(List<string> strings, string name)
+        {
+            if (strings == null || strings.Count == 0)
+            {
+                return $"No {name} set";
+            }
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < strings.Count; i++)
+            {
+                sb.Append(strings[i]);
+                if (i < strings.Count - 1)
+                {
+                    sb.Append(", ");
+                }
+            }
+            return sb.ToString();
+        }
+        private string BuildStringFromPropertiesList(List<Properties> properties)
+        {
+            if (properties == null || properties.Count == 0)
+            {
+                return "No properties set";
+            }
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < properties.Count; i++)
+            {
+                var property = properties[i];
+                sb.Append("Properties for apps: ");
+                sb.Append(BuildStringFromStringsList(property.appIds, "app ids"));
+                sb.AppendLine(" are set to: ");
+                sb.AppendLine(string.IsNullOrWhiteSpace(property.json) ? "empty json" : property.json);
+            }
+            return sb.ToString();
         }
     }
 }
