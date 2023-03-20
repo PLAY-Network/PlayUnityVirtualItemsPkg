@@ -3803,7 +3803,7 @@ MonoBehaviour:
   _virtualItemIconImage: {fileID: 7315120290191633857}
   _scrollRectContent: {fileID: 3085908482597693857}
   _buyButtonsAnchor: {fileID: 2655484443681808443}
-  _actionButtonForBuyPrefab: {fileID: -8926939961850380753, guid: da98907cb83f3034a8cd3da8e59a096b, type: 3}
+  _actionButtonForBuyPrefab: {fileID: 6241911303595238235, guid: a4fbeda0d6e0287498c523d9279b6914, type: 3}
 --- !u!225 &5678601839124477393
 CanvasGroup:
   m_ObjectHideFlags: 0
