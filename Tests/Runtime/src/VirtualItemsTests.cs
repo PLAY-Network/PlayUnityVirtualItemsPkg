@@ -22,11 +22,36 @@ namespace RGN.VirtualItems.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
+            var appIds = new List<string>() { RGNCoreBuilder.I.AppIDForRequests };
+            var tags = new List<string>();
+            int tagsCount = UnityEngine.Random.Range(3, 10);
+            for (int i = 0; i < tagsCount; ++i)
+            {
+                tags.Add("tag_" + UnityEngine.Random.Range(0, 1000));
+            }
+            var properties = new List<Properties> {
+                new Properties() {
+                    appIds = appIds,
+                    json = $"{{\"testValue\": {UnityEngine.Random.Range(0, 300)}}}"
+                }
+            };
+            var prices = new List<PriceInfo>();
+            //int pricesCount = UnityEngine.Random.Range(1, 5);
+            //for (int i = 0; i < pricesCount; ++i)
+            //{
+            //    prices.Add(new PriceInfo(
+            //    })
+            //}
+
+            var now = DateTime.UtcNow;
+            string nowFormatted = now.ToString("yyyy-MM-dd hh:mm:ss");
             var virtualItem = new VirtualItem() {
-                name = "Play Test Item",
-                description = "Created in Unity play tests",
-                appIds = new List<string>() { RGNCoreBuilder.I.AppIDForRequests },
+                name = "Play Test Item " + nowFormatted,
+                description = "Created in Unity play tests " + nowFormatted,
+                appIds = appIds,
                 isStackable = isStackable,
+                tags = tags,
+                properties = properties,
             };
 
             var task = VirtualItemsModule.I.AddVirtualItemAsync(virtualItem);
@@ -37,7 +62,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             UnityEngine.Debug.Log("Added new virtual item: " + result.id);
         }
 
-        [UnityTest]
+        // TODO: uncomment when the user roles are implemented [UnityTest]
         public IEnumerator AddVirtualItem_FailsForNormalUsers([ValueSource("_addVirtualItemStackableOptions")] bool isStackable)
         {
             yield return LoginAsNormalTester();
