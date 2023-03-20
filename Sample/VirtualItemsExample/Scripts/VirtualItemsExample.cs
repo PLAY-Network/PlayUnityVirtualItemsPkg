@@ -9,8 +9,8 @@ namespace RGN.Samples
 {
     public sealed class VirtualItemsExample : IUIScreen
     {
-        [SerializeField] private LoadingIndicator _fullScreenLoadingIndicator;
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private LoadingIndicator _fullScreenLoadingIndicator;
         [SerializeField] private RectTransform _scrollContentRectTrasform;
         [SerializeField] private PullToRefresh _pullToRefresh;
         [SerializeField] private RGNButton _loadMoreItemsButton;
