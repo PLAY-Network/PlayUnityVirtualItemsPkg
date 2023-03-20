@@ -8,7 +8,6 @@ using RGN.Modules.VirtualItems;
 using RGN.Tests;
 using UnityEngine;
 using UnityEngine.TestTools;
-using static UnityEngine.Networking.UnityWebRequest;
 
 namespace RGN.VirtualItems.Tests.Runtime
 {
@@ -39,7 +38,7 @@ namespace RGN.VirtualItems.Tests.Runtime
             int pricesCount = UnityEngine.Random.Range(1, 4);
             for (int i = 0; i < pricesCount; ++i)
             {
-                GeneratePrice(appIds, prices, null);
+                GeneratePrice(appIds, prices, i, null);
             }
             int groupPricesCount = UnityEngine.Random.Range(1, 3);
             for (int i = 0; i < groupPricesCount; ++i)
@@ -48,18 +47,19 @@ namespace RGN.VirtualItems.Tests.Runtime
                 int pricesCountInTheGroup = UnityEngine.Random.Range(2, 5);
                 for (int j = 0; j < pricesCountInTheGroup; ++j)
                 {
-                    GeneratePrice(appIds, prices, groupName);
+                    GeneratePrice(appIds, prices, j, groupName);
                 }
             }
             var now = DateTime.UtcNow;
             string nowFormatted = now.ToString("yyyy-MM-dd hh:mm:ss");
             var virtualItem = new VirtualItem() {
-                name = "Play Test Item " + nowFormatted,
+                name = "Play Test Item " + Guid.NewGuid().ToString().Substring(0, 4).ToLower(),
                 description = "Created in Unity play tests " + nowFormatted,
                 appIds = appIds,
                 isStackable = isStackable,
                 tags = tags,
                 properties = properties,
+                prices = prices,
             };
 
             var task = VirtualItemsModule.I.AddVirtualItemAsync(virtualItem);
@@ -70,16 +70,20 @@ namespace RGN.VirtualItems.Tests.Runtime
             UnityEngine.Debug.Log("Added new virtual item: " + result.id);
         }
 
-        private static void GeneratePrice(List<string> appIds, List<PriceInfo> prices, string group)
+        private static void GeneratePrice(
+            List<string> appIds,
+            List<PriceInfo> prices,
+            int index,
+            string group)
         {
             int price = UnityEngine.Random.Range(2, 200);
             prices.Add(new PriceInfo(
                 appIds,
                 string.Empty,
-                "currency_name_" + Guid.NewGuid().ToString().Substring(0, 4).ToLower(),
+                "currency_name_" + index,
                 price,
                 group,
-                price + UnityEngine.Random.Range(20, 30)));
+                price + UnityEngine.Random.Range(0, 5)));
         }
 
         // TODO: uncomment when the user roles are implemented [UnityTest]

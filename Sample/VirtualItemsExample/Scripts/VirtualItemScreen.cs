@@ -183,29 +183,109 @@ namespace RGN.Samples
             {
                 return;
             }
+            DisposeAllPriceButtons();
             float pricesTitleTextPosition = _buyButtonsAnchor.localPosition.y;
+            float buttonsCurrentYPos = pricesTitleTextPosition;
+            Dictionary<string, List<PriceInfo>> pricesByGroup = new Dictionary<string, List<PriceInfo>>();
+            const float GAB = 8f;
             for (int i = 0; i < priceInfos.Count; ++i)
             {
                 var priceInfo = priceInfos[i];
+                if (!string.IsNullOrEmpty(priceInfo.group))
+                {
+                    if (pricesByGroup.TryGetValue(priceInfo.group, out var group))
+                    {
+                        group.Add(priceInfo);
+                    }
+                    else
+                    {
+                        pricesByGroup.Add(priceInfo.group, new List<PriceInfo>() { priceInfo });
+                    }
+                    continue;
+                }
                 RGNButton button = Instantiate(_actionButtonForBuyPrefab, _scrollRectContent);
-                button.RectTransform.pivot = Vector2.up;
-                button.RectTransform.localPosition = new Vector2(
-                    16,
-                    (i * _actionButtonForBuyPrefab.GetHeight() ) + pricesTitleTextPosition);
-                button.ButtonText.text = 
-                    $"<s>{priceInfo.quantityWithoutDiscount}</s> {priceInfo.quantity} {priceInfo.name}";
+                button.RectTransform.localPosition = new Vector2(16, buttonsCurrentYPos);
+                buttonsCurrentYPos -= button.GetHeight() + GAB;
+                button.ButtonText.text = priceInfo.ToDiscountPriceCurrencyString();
                 button.Button.onClick.AddListener(async () => {
+                    bool failed = false;
                     _canvasGroup.interactable = false;
                     _fullScreenLoadingIndicator.SetEnabled(true);
-                    await StoreModule.I.BuyVirtualItemsAsync(
-                        new List<string>() { virtualItemId },
-                        new List<string>() { priceInfo.name } );
+                    try
+                    {
+                        await StoreModule.I.BuyVirtualItemsAsync(
+                            new List<string>() { virtualItemId },
+                            new List<string>() { priceInfo.name });
+                    }
+                    catch (System.Exception ex)
+                    {
+                        failed = true;
+                        Debug.LogException(ex);
+                        ToastMessage.I.ShowError(ex.Message);
+                    }
                     _fullScreenLoadingIndicator.SetEnabled(false);
                     _canvasGroup.interactable = true;
-                    ToastMessage.I.ShowSuccess("Successfully purchased virtual item with id: " + virtualItemId);
-                    });
+                    if (!failed)
+                    {
+                        ToastMessage.I.ShowSuccess("Successfully purchased virtual item with id: " + virtualItemId);
+                    }
+                });
                 _buyButtons.Add(button);
             }
+            foreach (var priceGroup in pricesByGroup)
+            {
+                RGNButton button = Instantiate(_actionButtonForBuyPrefab, _scrollRectContent);
+                float buttonInitialHeight = _actionButtonForBuyPrefab.GetHeight();
+                button.SetHeight(buttonInitialHeight * priceGroup.Value.Count);
+                button.RectTransform.localPosition = new Vector2(16, buttonsCurrentYPos);
+                buttonsCurrentYPos -= button.GetHeight() + GAB;
+                var sb = new System.Text.StringBuilder();
+                sb.Append("PriceGroup ").Append(priceGroup.Key).AppendLine(": ");
+                var currencies = new List<string>();
+                for (int i = 0; i < priceGroup.Value.Count; i++)
+                {
+                    var priceInfo = priceGroup.Value[i];
+                    sb.Append(priceInfo.ToDiscountPriceCurrencyString());
+                    if (i < priceGroup.Value.Count - 1)
+                    {
+                        sb.AppendLine(", ");
+                    }
+                    currencies.Add(priceInfo.name);
+                }
+                button.ButtonText.text = sb.ToString();
+                button.Button.onClick.AddListener(async () => {
+                    bool failed = false;
+                    _canvasGroup.interactable = false;
+                    _fullScreenLoadingIndicator.SetEnabled(true);
+                    try
+                    {
+                        await StoreModule.I.BuyVirtualItemsAsync(
+                            new List<string>() { virtualItemId },
+                            currencies);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        failed = true;
+                        Debug.LogException(ex);
+                        ToastMessage.I.ShowError(ex.Message);
+                    }
+                    _fullScreenLoadingIndicator.SetEnabled(false);
+                    _canvasGroup.interactable = true;
+                    if (!failed)
+                    {
+                        ToastMessage.I.ShowSuccess("Successfully purchased virtual item with id: " + virtualItemId);
+                    }
+                });
+                _buyButtons.Add(button);
+            }
+        }
+        private void DisposeAllPriceButtons()
+        {
+            for (int i = 0; i < _buyButtons.Count; ++i)
+            {
+                _buyButtons[i].Dispose();
+            }
+            _buyButtons.Clear();
         }
     }
 }
