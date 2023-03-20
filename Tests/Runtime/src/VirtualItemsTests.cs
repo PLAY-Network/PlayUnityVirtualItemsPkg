@@ -36,13 +36,21 @@ namespace RGN.VirtualItems.Tests.Runtime
                 }
             };
             var prices = new List<PriceInfo>();
-            //int pricesCount = UnityEngine.Random.Range(1, 5);
-            //for (int i = 0; i < pricesCount; ++i)
-            //{
-            //    prices.Add(new PriceInfo(
-            //    })
-            //}
-
+            int pricesCount = UnityEngine.Random.Range(1, 4);
+            for (int i = 0; i < pricesCount; ++i)
+            {
+                GeneratePrice(appIds, prices, null);
+            }
+            int groupPricesCount = UnityEngine.Random.Range(1, 3);
+            for (int i = 0; i < groupPricesCount; ++i)
+            {
+                string groupName = "price_group_ " + Guid.NewGuid().ToString().Substring(0, 4).ToLower();
+                int pricesCountInTheGroup = UnityEngine.Random.Range(2, 5);
+                for (int j = 0; j < pricesCountInTheGroup; ++j)
+                {
+                    GeneratePrice(appIds, prices, groupName);
+                }
+            }
             var now = DateTime.UtcNow;
             string nowFormatted = now.ToString("yyyy-MM-dd hh:mm:ss");
             var virtualItem = new VirtualItem() {
@@ -60,6 +68,18 @@ namespace RGN.VirtualItems.Tests.Runtime
 
             Assert.NotNull(result, "The result is null");
             UnityEngine.Debug.Log("Added new virtual item: " + result.id);
+        }
+
+        private static void GeneratePrice(List<string> appIds, List<PriceInfo> prices, string group)
+        {
+            int price = UnityEngine.Random.Range(2, 200);
+            prices.Add(new PriceInfo(
+                appIds,
+                string.Empty,
+                "currency_name_" + Guid.NewGuid().ToString().Substring(0, 4).ToLower(),
+                price,
+                group,
+                price + UnityEngine.Random.Range(20, 30)));
         }
 
         // TODO: uncomment when the user roles are implemented [UnityTest]
