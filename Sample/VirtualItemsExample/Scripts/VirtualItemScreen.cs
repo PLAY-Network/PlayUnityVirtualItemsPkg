@@ -278,6 +278,8 @@ namespace RGN.Samples
                 });
                 _buyButtons.Add(button);
             }
+            var sizeDelta = _scrollRectContent.sizeDelta;
+            _scrollRectContent.sizeDelta = new Vector2(sizeDelta.x, -buttonsCurrentYPos);
         }
         private void DisposeAllPriceButtons()
         {
