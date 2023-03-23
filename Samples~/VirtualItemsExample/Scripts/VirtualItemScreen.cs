@@ -188,8 +188,8 @@ namespace RGN.Samples
                 var property = properties[i];
                 sb.Append("Properties for apps: ");
                 sb.Append(BuildStringFromStringsList(property.appIds, "app ids"));
-                sb.AppendLine(" are set to: ");
-                sb.AppendLine(string.IsNullOrWhiteSpace(property.json) ? "empty json" : property.json);
+                sb.AppendLine(string.IsNullOrWhiteSpace(property.json) ? " are not set." : " are set to: ");
+                sb.AppendLine(property.json);
             }
             return sb.ToString();
         }
