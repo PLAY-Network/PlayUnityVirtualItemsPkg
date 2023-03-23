@@ -23,7 +23,17 @@
         "/package.json",
         "/package.json.meta",
         "/ReadyGamesNetwork",
-        "/ReadyGamesNetwork.meta"
+        "/ReadyGamesNetwork.meta",
+        "/Samples",
+        "/Samples.meta",
+        "/Samples~"
+    ],
+    "samples": [
+      {
+        "displayName": "Virtual Items Example",
+        "description": "Contains prefab and scene to view existing virtual items for the current game/app",
+        "path": "Samples~/WalletsExample"
+      }
     ],
     "dependencies": {
         "io.getready.rgn.core": "0.1.0",
