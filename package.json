@@ -32,7 +32,7 @@
       {
         "displayName": "Virtual Items Example",
         "description": "Contains prefab and scene to view existing virtual items for the current game/app",
-        "path": "Samples~/WalletsExample"
+        "path": "Samples~/VirtualItemsExample"
       }
     ],
     "dependencies": {
