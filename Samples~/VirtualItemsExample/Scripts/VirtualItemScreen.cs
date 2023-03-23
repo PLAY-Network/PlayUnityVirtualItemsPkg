@@ -42,6 +42,7 @@ namespace RGN.Samples
         [SerializeField] private IconImage _virtualItemIconImage;
         [SerializeField] private RectTransform _scrollRectContent;
         [SerializeField] private RectTransform _buyButtonsAnchor;
+        [SerializeField] private GameObject _nftIconGameObject;
 
         [SerializeField] private RGNButton _actionButtonForBuyPrefab;
 
@@ -82,6 +83,7 @@ namespace RGN.Samples
             _appIdsText.text = BuildStringFromStringsList(_virtualItem.appIds, "app ids");
             _childIdsText.text = BuildStringFromStringsList(_virtualItem.childs, "virtual item childs");
             _propertiesText.text = BuildStringFromPropertiesList(_virtualItem.properties);
+            _nftIconGameObject.SetActive(_virtualItem.IsNFT());
             InstantiateBuyButtonsForEachPrice(_virtualItem.id, _virtualItem.prices);
             _fullScreenLoadingIndicator.SetEnabled(false);
             await LoadIconImageAsync(_virtualItem.id, false);

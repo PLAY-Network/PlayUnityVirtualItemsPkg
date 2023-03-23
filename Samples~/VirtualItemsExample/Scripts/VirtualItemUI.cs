@@ -16,6 +16,7 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _createdAtText;
         [SerializeField] private TextMeshProUGUI _updatedAtText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
+        [SerializeField] private GameObject _nftIconGameObject;
 
         [SerializeField] private Button _openVirtualItemScreenButton;
 
@@ -39,6 +40,11 @@ namespace RGN.Samples
             _createdAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.createdAt);
             _updatedAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.updatedAt);
             _descriptionText.text = virtualItem.description;
+            _nftIconGameObject.SetActive(virtualItem.IsNFT());
+            if (!virtualItem.IsNFT())
+            {
+                _nameText.rectTransform.anchoredPosition = Vector2.right * 4;
+            }
             _openVirtualItemScreenButton.onClick.AddListener(OnOpenVirtualItemScreenButtonClick);
         }
         public void Dispose()
