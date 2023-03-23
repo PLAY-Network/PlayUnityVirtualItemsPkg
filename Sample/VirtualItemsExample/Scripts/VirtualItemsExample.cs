@@ -7,6 +7,12 @@ using UnityEngine;
 
 namespace RGN.Samples
 {
+    public interface IVirtualItemsExampleClient
+    {
+        Task<bool> DoesTheUserHasPrimaryWalletAddressAsync();
+        void OpenWalletsScreen();
+    }
+
     public sealed class VirtualItemsExample : IUIScreen
     {
         [SerializeField] private CanvasGroup _canvasGroup;
@@ -17,6 +23,7 @@ namespace RGN.Samples
 
         [SerializeField] private VirtualItemUI _virtualItemPrefab;
 
+        private IVirtualItemsExampleClient _virtualItemsExampleClient;
         private List<VirtualItemUI> _virtualItems;
         private bool _triedToLoad;
 
@@ -32,6 +39,10 @@ namespace RGN.Samples
             base.Dispose(disposing);
             _pullToRefresh.RefreshRequested -= ReloadVirtualItemsAsync;
             _loadMoreItemsButton.Button.onClick.RemoveListener(OnLoadMoreItemsButtonAsync);
+        }
+        public void SetVirtualItemsExampleClient(IVirtualItemsExampleClient virtualItemsExampleClient)
+        {
+            _virtualItemsExampleClient = virtualItemsExampleClient;
         }
 
         protected override async void OnShow()
@@ -83,7 +94,7 @@ namespace RGN.Samples
             for (int i = 0; i < virtualItems.Count; ++i)
             {
                 VirtualItemUI ui = Instantiate(_virtualItemPrefab, _scrollContentRectTrasform);
-                ui.Init(_rgnFrame, _virtualItems.Count, virtualItems[i]);
+                ui.Init(_rgnFrame, _virtualItems.Count, virtualItems[i], _virtualItemsExampleClient);
                 _virtualItems.Add(ui);
             }
             float loadMoreItemsButtonPos = _virtualItems.Count * _virtualItemPrefab.GetHeight();

@@ -11,6 +11,18 @@ using UnityEngine;
 
 namespace RGN.Samples
 {
+    internal sealed class VirtualItemScreenParameters
+    {
+        internal VirtualItem VirtualItem { get; }
+        internal IVirtualItemsExampleClient VirtualItemsExampleClient { get; }
+
+        internal VirtualItemScreenParameters(VirtualItem virtualItem, IVirtualItemsExampleClient virtualItemsExampleClient)
+        {
+            VirtualItem = virtualItem;
+            VirtualItemsExampleClient = virtualItemsExampleClient;
+        }
+    }
+
     public sealed class VirtualItemScreen : IUIScreen
     {
         [SerializeField] private CanvasGroup _canvasGroup;
@@ -34,6 +46,7 @@ namespace RGN.Samples
         [SerializeField] private RGNButton _actionButtonForBuyPrefab;
 
         private VirtualItem _virtualItem;
+        private IVirtualItemsExampleClient _virtualItemsExampleClient;
         private List<RGNButton> _buyButtons;
 
         public override void PreInit(IRGNFrame rgnFrame)
@@ -49,26 +62,27 @@ namespace RGN.Samples
         }
         public override async void OnWillAppearNow(object parameters)
         {
-            VirtualItem virtualItem = parameters as VirtualItem;
-            _virtualItem = virtualItem;
-            if (virtualItem == null)
+            var castedParams = parameters as VirtualItemScreenParameters;
+            _virtualItem = castedParams.VirtualItem;
+            _virtualItemsExampleClient = castedParams.VirtualItemsExampleClient;
+            if (_virtualItem == null)
             {
                 Debug.LogError("The provided virtual item is null or invalid");
                 return;
             }
-            _titleText.text = virtualItem.name;
-            _descriptionText.text = virtualItem.description;
-            _idText.text = virtualItem.id;
-            _createdAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.createdAt);
-            _updatedAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.updatedAt);
-            _createdByText.text = virtualItem.createdBy;
-            _updatedByText.text = virtualItem.updatedBy;
-            _isStackableText.text = virtualItem.isStackable ? "Item is stackable" : "Item is not stackable";
-            _tagsText.text = BuildStringFromStringsList(virtualItem.tags, "tags");
-            _appIdsText.text = BuildStringFromStringsList(virtualItem.appIds, "app ids");
-            _childIdsText.text = BuildStringFromStringsList(virtualItem.childs, "virtual item childs");
-            _propertiesText.text = BuildStringFromPropertiesList(virtualItem.properties);
-            InstantiateBuyButtonsForEachPrice(virtualItem.id, virtualItem.prices);
+            _titleText.text = _virtualItem.name;
+            _descriptionText.text = _virtualItem.description;
+            _idText.text = _virtualItem.id;
+            _createdAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(_virtualItem.createdAt);
+            _updatedAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(_virtualItem.updatedAt);
+            _createdByText.text = _virtualItem.createdBy;
+            _updatedByText.text = _virtualItem.updatedBy;
+            _isStackableText.text = _virtualItem.isStackable ? "Item is stackable" : "Item is not stackable";
+            _tagsText.text = BuildStringFromStringsList(_virtualItem.tags, "tags");
+            _appIdsText.text = BuildStringFromStringsList(_virtualItem.appIds, "app ids");
+            _childIdsText.text = BuildStringFromStringsList(_virtualItem.childs, "virtual item childs");
+            _propertiesText.text = BuildStringFromPropertiesList(_virtualItem.properties);
+            InstantiateBuyButtonsForEachPrice(_virtualItem.id, _virtualItem.prices);
             _fullScreenLoadingIndicator.SetEnabled(false);
             await LoadIconImageAsync(_virtualItem.id, false);
         }
@@ -213,6 +227,29 @@ namespace RGN.Samples
                     _fullScreenLoadingIndicator.SetEnabled(true);
                     try
                     {
+                        if (_virtualItem.IsNFT())
+                        {
+                            Debug.Log("The virtual item is NFT: " + _virtualItem.id);
+                            if (_virtualItemsExampleClient == null)
+                            {
+                                string message = "The virtual item is an NFT, you need to use WalletsModule. " +
+                                    "Please open the UIRoot Sample from Firebase Impl package to use this functionality";
+                                Debug.LogError(message);
+                                ToastMessage.I.Show(message);
+                                _fullScreenLoadingIndicator.SetEnabled(false);
+                                _canvasGroup.interactable = true;
+                                return;
+                            }
+                            var primaryWalletExists = await _virtualItemsExampleClient.DoesTheUserHasPrimaryWalletAddressAsync();
+                            if (!primaryWalletExists)
+                            {
+                                ToastMessage.I.Show("Please create a primary wallet to purchase the NFT virtual item");
+                                _virtualItemsExampleClient.OpenWalletsScreen();
+                                _fullScreenLoadingIndicator.SetEnabled(false);
+                                _canvasGroup.interactable = true;
+                                return;
+                            }
+                        }
                         await StoreModule.I.BuyVirtualItemsAsync(
                             new List<string>() { virtualItemId },
                             new List<string>() { priceInfo.name });

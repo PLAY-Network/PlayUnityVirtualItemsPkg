@@ -21,12 +21,18 @@ namespace RGN.Samples
 
         private Impl.Firebase.IRGNFrame _rgnFrame;
         private VirtualItem _virtualItem;
+        private IVirtualItemsExampleClient _virtualItemsExampleClient;
         private bool _disposed = false;
 
-        internal void Init(Impl.Firebase.IRGNFrame rgnFrame, int index, VirtualItem virtualItem)
+        internal void Init(
+            Impl.Firebase.IRGNFrame rgnFrame,
+            int index,
+            VirtualItem virtualItem,
+            IVirtualItemsExampleClient virtualItemsExampleClient)
         {
             _rgnFrame = rgnFrame;
             _virtualItem = virtualItem;
+            _virtualItemsExampleClient = virtualItemsExampleClient;
             _rectTransform.localPosition = new Vector3(0, -index * GetHeight(), 0);
             _idText.text = virtualItem.id;
             _nameText.text = virtualItem.name;
@@ -56,7 +62,10 @@ namespace RGN.Samples
 
         private void OnOpenVirtualItemScreenButtonClick()
         {
-            _rgnFrame.OpenScreen<VirtualItemScreen>(_virtualItem);
+            _rgnFrame.OpenScreen<VirtualItemScreen>(
+                new VirtualItemScreenParameters(
+                    _virtualItem,
+                    _virtualItemsExampleClient));
         }
     }
 }
