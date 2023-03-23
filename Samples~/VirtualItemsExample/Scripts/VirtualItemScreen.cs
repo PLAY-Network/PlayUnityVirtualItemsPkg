@@ -242,6 +242,15 @@ namespace RGN.Samples
                                 _canvasGroup.interactable = true;
                                 return;
                             }
+                            int userRGNCoinBalance = _virtualItemsExampleClient.GetCurrentUserRGNCoinBalance();
+                            if (userRGNCoinBalance < _virtualItem.GetRGNCoinPrice())
+                            {
+                                ToastMessage.I.Show("Not enough RGN Coins, please purchase more.");
+                                _virtualItemsExampleClient.OpenCurrenciesScreen();
+                                _fullScreenLoadingIndicator.SetEnabled(false);
+                                _canvasGroup.interactable = true;
+                                return;
+                            }
                             var primaryWalletExists = await _virtualItemsExampleClient.DoesTheUserHasPrimaryWalletAddressAsync();
                             if (!primaryWalletExists)
                             {

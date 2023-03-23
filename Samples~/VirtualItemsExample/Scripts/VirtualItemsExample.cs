@@ -11,6 +11,8 @@ namespace RGN.Samples
     {
         Task<bool> DoesTheUserHasPrimaryWalletAddressAsync();
         void OpenWalletsScreen();
+        int GetCurrentUserRGNCoinBalance();
+        void OpenCurrenciesScreen();
     }
 
     public sealed class VirtualItemsExample : IUIScreen
