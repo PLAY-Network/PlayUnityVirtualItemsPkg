@@ -1,4 +1,5 @@
 using RGN.Modules.VirtualItems;
+using RGN.UI;
 using RGN.Utility;
 using TMPro;
 using UnityEngine;
@@ -18,7 +19,6 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [SerializeField] private Image _isNFTItemImage;
         [SerializeField] private Image _isStackableItemImage;
-        [SerializeField] private Color _isActiveColor;
 
         [SerializeField] private Button _openVirtualItemScreenButton;
 
@@ -42,8 +42,8 @@ namespace RGN.Samples
             _createdAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.createdAt);
             _updatedAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.updatedAt);
             _descriptionText.text = virtualItem.description;
-            _isNFTItemImage.color = virtualItem.IsNFT() ? _isActiveColor : Color.gray;
-            _isStackableItemImage.color = virtualItem.isStackable ? _isActiveColor : Color.gray;
+            _isNFTItemImage.color = virtualItem.IsNFT() ? RGNUISettings.I.ActiveColor : Color.gray;
+            _isStackableItemImage.color = virtualItem.isStackable ? RGNUISettings.I.ActiveColor : Color.gray;
             _openVirtualItemScreenButton.onClick.AddListener(OnOpenVirtualItemScreenButtonClick);
         }
         public void Dispose()
