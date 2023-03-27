@@ -16,7 +16,9 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _createdAtText;
         [SerializeField] private TextMeshProUGUI _updatedAtText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
-        [SerializeField] private GameObject _nftIconGameObject;
+        [SerializeField] private Image _isNFTItemImage;
+        [SerializeField] private Image _isStackableItemImage;
+        [SerializeField] private Color _isActiveColor;
 
         [SerializeField] private Button _openVirtualItemScreenButton;
 
@@ -40,11 +42,8 @@ namespace RGN.Samples
             _createdAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.createdAt);
             _updatedAtText.text = DateTimeUtility.UnixTimeStampToISOLikeStringNoMilliseconds(virtualItem.updatedAt);
             _descriptionText.text = virtualItem.description;
-            _nftIconGameObject.SetActive(virtualItem.IsNFT());
-            if (!virtualItem.IsNFT())
-            {
-                _nameText.rectTransform.anchoredPosition = Vector2.right * 4;
-            }
+            _isNFTItemImage.color = virtualItem.IsNFT() ? _isActiveColor : Color.gray;
+            _isStackableItemImage.color = virtualItem.isStackable ? _isActiveColor : Color.gray;
             _openVirtualItemScreenButton.onClick.AddListener(OnOpenVirtualItemScreenButtonClick);
         }
         public void Dispose()
