@@ -13,6 +13,7 @@ namespace RGN.Samples
         void OpenWalletsScreen();
         int GetCurrentUserRGNCoinBalance();
         void OpenCurrenciesScreen();
+        Task UpdateUserProfileAsync();
     }
 
     public sealed class VirtualItemsExample : IUIScreen
@@ -101,9 +102,9 @@ namespace RGN.Samples
             }
             float loadMoreItemsButtonPos = _virtualItems.Count * _virtualItemPrefab.GetHeight();
             _loadMoreItemsButton.RectTransform.anchoredPosition = new Vector2(0, -loadMoreItemsButtonPos);
-            float loadMoreItemsButtonHeight = _loadMoreItemsButton.GetHeight();
+            float loadedItemsHeight = _loadMoreItemsButton.GetHeight();
             Vector2 sizeDelta = _scrollContentRectTrasform.sizeDelta;
-            _scrollContentRectTrasform.sizeDelta = new Vector2(sizeDelta.x, loadMoreItemsButtonPos + loadMoreItemsButtonHeight);
+            _scrollContentRectTrasform.sizeDelta = new Vector2(sizeDelta.x, loadMoreItemsButtonPos + loadedItemsHeight);
             SetUIInteractable(true);
         }
     }

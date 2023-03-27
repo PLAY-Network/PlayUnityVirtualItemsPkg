@@ -163,11 +163,11 @@ namespace RGN.Samples
 
         private void InstantiateBuyButtonsForEachPrice(string virtualItemId, List<PriceInfo> priceInfos)
         {
+            DisposeAllPriceButtons();
             if (priceInfos == null || priceInfos.Count == 0)
             {
                 return;
             }
-            DisposeAllPriceButtons();
             float pricesTitleTextPosition = _buyButtonsAnchor.localPosition.y;
             float buttonsCurrentYPos = pricesTitleTextPosition;
             Dictionary<string, List<PriceInfo>> pricesByGroup = new Dictionary<string, List<PriceInfo>>();
@@ -192,59 +192,7 @@ namespace RGN.Samples
                 buttonsCurrentYPos -= button.GetHeight() + GAB;
                 button.ButtonText.text = priceInfo.ToDiscountPriceCurrencyString();
                 button.Button.onClick.AddListener(async () => {
-                    bool failed = false;
-                    _canvasGroup.interactable = false;
-                    _fullScreenLoadingIndicator.SetEnabled(true);
-                    try
-                    {
-                        if (_virtualItem.IsNFT())
-                        {
-                            Debug.Log("The virtual item is NFT: " + _virtualItem.id);
-                            if (_virtualItemsExampleClient == null)
-                            {
-                                string message = "The virtual item is an NFT, you need to use WalletsModule. " +
-                                    "Please open the UIRoot Sample from Firebase Impl package to use this functionality";
-                                Debug.LogError(message);
-                                ToastMessage.I.Show(message);
-                                _fullScreenLoadingIndicator.SetEnabled(false);
-                                _canvasGroup.interactable = true;
-                                return;
-                            }
-                            int userRGNCoinBalance = _virtualItemsExampleClient.GetCurrentUserRGNCoinBalance();
-                            if (userRGNCoinBalance < _virtualItem.GetRGNCoinPrice())
-                            {
-                                ToastMessage.I.Show("Not enough RGN Coins, please purchase more.");
-                                _virtualItemsExampleClient.OpenCurrenciesScreen();
-                                _fullScreenLoadingIndicator.SetEnabled(false);
-                                _canvasGroup.interactable = true;
-                                return;
-                            }
-                            var primaryWalletExists = await _virtualItemsExampleClient.DoesTheUserHasPrimaryWalletAddressAsync();
-                            if (!primaryWalletExists)
-                            {
-                                ToastMessage.I.Show("Please create a primary wallet to purchase the NFT virtual item");
-                                _virtualItemsExampleClient.OpenWalletsScreen();
-                                _fullScreenLoadingIndicator.SetEnabled(false);
-                                _canvasGroup.interactable = true;
-                                return;
-                            }
-                        }
-                        await StoreModule.I.BuyVirtualItemsAsync(
-                            new List<string>() { virtualItemId },
-                            new List<string>() { priceInfo.name });
-                    }
-                    catch (System.Exception ex)
-                    {
-                        failed = true;
-                        Debug.LogException(ex);
-                        ToastMessage.I.ShowError(ex.Message);
-                    }
-                    _fullScreenLoadingIndicator.SetEnabled(false);
-                    _canvasGroup.interactable = true;
-                    if (!failed)
-                    {
-                        ToastMessage.I.ShowSuccess("Successfully purchased virtual item with id: " + virtualItemId);
-                    }
+                    await OnBuyButtonClickAsync(virtualItemId, new List<string> { priceInfo.name });
                 });
                 _buyButtons.Add(button);
             }
@@ -270,33 +218,75 @@ namespace RGN.Samples
                 }
                 button.ButtonText.text = sb.ToString();
                 button.Button.onClick.AddListener(async () => {
-                    bool failed = false;
-                    _canvasGroup.interactable = false;
-                    _fullScreenLoadingIndicator.SetEnabled(true);
-                    try
-                    {
-                        await StoreModule.I.BuyVirtualItemsAsync(
-                            new List<string>() { virtualItemId },
-                            currencies);
-                    }
-                    catch (System.Exception ex)
-                    {
-                        failed = true;
-                        Debug.LogException(ex);
-                        ToastMessage.I.ShowError(ex.Message);
-                    }
-                    _fullScreenLoadingIndicator.SetEnabled(false);
-                    _canvasGroup.interactable = true;
-                    if (!failed)
-                    {
-                        ToastMessage.I.ShowSuccess("Successfully purchased virtual item with id: " + virtualItemId);
-                    }
+                    await OnBuyButtonClickAsync(virtualItemId, currencies);
                 });
                 _buyButtons.Add(button);
             }
             var sizeDelta = _scrollRectContent.sizeDelta;
             _scrollRectContent.sizeDelta = new Vector2(sizeDelta.x, -buttonsCurrentYPos);
         }
+
+        private async Task OnBuyButtonClickAsync(string virtualItemId, List<string> currencies)
+        {
+            bool failed = false;
+            _canvasGroup.interactable = false;
+            _fullScreenLoadingIndicator.SetEnabled(true);
+            try
+            {
+                if (_virtualItem.IsNFT())
+                {
+                    Debug.Log("The virtual item is NFT: " + _virtualItem.id);
+                    if (_virtualItemsExampleClient == null)
+                    {
+                        string message = "The virtual item is an NFT, you need to use WalletsModule. " +
+                            "Please open the UIRoot Sample from Firebase Impl package to use this functionality";
+                        Debug.LogError(message);
+                        ToastMessage.I.Show(message);
+                        _fullScreenLoadingIndicator.SetEnabled(false);
+                        _canvasGroup.interactable = true;
+                        return;
+                    }
+                    int userRGNCoinBalance = _virtualItemsExampleClient.GetCurrentUserRGNCoinBalance();
+                    if (userRGNCoinBalance < _virtualItem.GetRGNCoinPrice())
+                    {
+                        ToastMessage.I.Show("Not enough RGN Coins, please purchase more.");
+                        _virtualItemsExampleClient.OpenCurrenciesScreen();
+                        _fullScreenLoadingIndicator.SetEnabled(false);
+                        _canvasGroup.interactable = true;
+                        return;
+                    }
+                    var primaryWalletExists = await _virtualItemsExampleClient.DoesTheUserHasPrimaryWalletAddressAsync();
+                    if (!primaryWalletExists)
+                    {
+                        ToastMessage.I.Show("Please create a primary wallet to purchase the NFT virtual item");
+                        _virtualItemsExampleClient.OpenWalletsScreen();
+                        _fullScreenLoadingIndicator.SetEnabled(false);
+                        _canvasGroup.interactable = true;
+                        return;
+                    }
+                }
+                await StoreModule.I.BuyVirtualItemsAsync(
+                    new List<string>() { virtualItemId },
+                    currencies);
+                if (_virtualItemsExampleClient != null)
+                {
+                    await _virtualItemsExampleClient.UpdateUserProfileAsync();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                failed = true;
+                Debug.LogException(ex);
+                ToastMessage.I.ShowError(ex.Message);
+            }
+            _fullScreenLoadingIndicator.SetEnabled(false);
+            _canvasGroup.interactable = true;
+            if (!failed)
+            {
+                ToastMessage.I.ShowSuccess("Successfully purchased virtual item with id: " + virtualItemId);
+            }
+        }
+
         private void DisposeAllPriceButtons()
         {
             for (int i = 0; i < _buyButtons.Count; ++i)
