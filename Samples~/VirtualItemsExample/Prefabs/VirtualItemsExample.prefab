@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 593856957844810146}
   - component: {fileID: 1636925348620821010}
   m_Layer: 5
-  m_Name: DeviderImage
+  m_Name: DividerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -721,7 +721,7 @@ GameObject:
   - component: {fileID: 9082023814591309956}
   - component: {fileID: 5194801587630323870}
   m_Layer: 5
-  m_Name: DeviderImage
+  m_Name: DividerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1682,7 +1682,7 @@ GameObject:
   - component: {fileID: 4165290362691385591}
   - component: {fileID: 3381687856621716389}
   m_Layer: 5
-  m_Name: DeviderImage
+  m_Name: DividerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2466,7 +2466,7 @@ GameObject:
   - component: {fileID: 3642231508019310834}
   - component: {fileID: 7975088284304407413}
   m_Layer: 5
-  m_Name: DeviderImage
+  m_Name: DividerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2991,7 +2991,7 @@ GameObject:
   - component: {fileID: 5642531204307525979}
   - component: {fileID: 8679468999681264523}
   m_Layer: 5
-  m_Name: DeviderImage
+  m_Name: DividerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4181,6 +4181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _reloadImagePrefab: {fileID: 5322230921392865710, guid: 9a8c25b81392f83478434c81b478f346, type: 3}
   _refreshDistance: 100
+  _rotationSpeed: 300
 --- !u!1001 &1785143118951592524
 PrefabInstance:
   m_ObjectHideFlags: 0
