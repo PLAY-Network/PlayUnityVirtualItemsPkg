@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RGNVirtualItems</name>
+    </assembly>
+    <members>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.id">
+            <summary>
+            Unique id of the virtual item
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.name">
+            <summary>
+            Virtual item name
+            Is used also to store localization key for the name
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.description">
+            <summary>
+            Virtual item description
+            Is used also to store localization key for the description
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.createdAt">
+            <summary>
+            Date and time when the virtual item was created
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.updatedAt">
+            <summary>
+            Date and time when the virtual item data was last time updated
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.createdBy">
+            <summary>
+            User Id who created the virtual item
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.updatedBy">
+            <summary>
+            User Id who last time updated the item
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.isStackable">
+            <summary>
+            This field is used to indicate if an item can be stacked
+            When you add stackable items to user inventory, the items count is increased
+            When you add non stackable items to user inventory, this operation creates
+            a new item in inventory
+            Only non stackable items can be upgraded
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.isNFT">
+            <summary>
+            Indicates if the virtual item is a NFT.
+            Please use IsNFT() method to check if item is a NFT.
+            The NFT virtual items require primary user wallet
+            For more information see the API in WalletsModule
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.appIds">
+            <summary>
+            List of application ids where this item is used
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.tags">
+            <summary>
+            List of tags to filter the items
+            You can place multiple items into one category tag
+            For example in a shooter game: "guns", "rifles"
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.childs">
+            <summary>
+            List of childs of the current virtual item. Virtual items ids list.
+            It is used to build tree structure hierarchies.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.addressableIds">
+            <summary>
+            List of addressable ids for the virtual item binary data
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.properties">
+            <summary>
+            List of virtual item custom json. It is used to store game specific
+            json in json format.
+            For example: you can attach some json like "damage", "range",
+            "fireRate" attached to this item
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.prices">
+            <summary>
+            Array of prices for the virtual item
+            A virtual item can be sold for different currencies with different prices
+            It is also possible to combine two and more currencies to sell the item
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.totalQuantity">
+            <summary>
+            How much quantity of the goods left (use only for NFT items)
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItem.IsNFT">
+            <summary>
+            Checks if the item is NFT. It means the item was minted.
+            The purchase process for NFT items goes throught blockchain
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItem.GetRGNCoinPrice">
+            <summary>
+            Returns Virtual Item RGNCoin (rgn-coin) price.
+            If the price can not be found throws InvalidOperationException
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItem.GetCustomCoinPrice(System.String)">
+            <summary>
+            Returns Custom Currency Price with provided currency name.
+            If the price with currency name can not be found throws InvalidOperationException
+            </summary>
+            <param name="currencyName">Valid currency name for current app/game</param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="T:RGN.Modules.VirtualItems.VirtualItemsModule">
+            <summary>
+            Handle virtual items (Buy, Create, Get, thumbnail)
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddVirtualItemAsync(RGN.Modules.VirtualItems.VirtualItem)">
+            <summary>
+            Add a virtual item
+            </summary>
+            <param name="virtualItem"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.UpdateVirtualItemAsync(System.String,RGN.Modules.VirtualItems.VirtualItem)">
+            <summary>
+            Update a virtual item if exist
+            </summary>
+            <param name="virtualItem"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync">
+            <summary>
+             Getting all virtual items releated to your game
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync(System.Int32,System.String)">
+            <summary>
+             Returns a limited list of virtual items for your game.
+            </summary>
+            <param name="limit">Maximal count of items to return</param>
+            <param name="startAfter">The item id to start after</param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsByIdsAsync(System.Collections.Generic.List{System.String})">
+            <summary>
+            Return a list of virtual items based on the Id list
+            </summary>
+            <param name="virtualItemsIds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Returns a list of virtual items based on tags
+            </summary>
+            <param name="tags">List of tags to query the virtual items</param>
+            <param name="appId">Optional parameter that you can use to retrieve items only for your app
+            When you set the tags for Virtual Item, you can use the appId optional parameter
+            The app id is attached to every tag and stored in the tags array
+            For example:
+            tags without appId could look like: "weapons", "rifles"
+            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetTagsAsync(System.String)">
+            <summary>
+            Returns all tags for specific virtual item
+            </summary>
+            <param name="virtualItemId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Sets the tags array for a specific virtual item
+            </summary>
+            <param name="virtualItemId"></param>
+            <param name="tags"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetNameAsync(System.String,System.String)">
+            <summary>
+            Sets the name for a specific virtual item
+            </summary>
+            <param name="virtualItemId"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetDescriptionAsync(System.String,System.String)">
+            <summary>
+            Sets the description for a specific virtual item
+            </summary>
+            <param name="virtualItemId"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetPropertiesAsync(System.String)">
+            <summary>
+            Returns json string or throws an exception if there are no json for virtual item
+            </summary>
+            <param name="virtualItemId"></param>
+            <returns>Returns json as string</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetPropertiesAsync(System.String,System.String)">
+            <summary>
+            Set json on a given virtualItemId. 
+            </summary>
+            <param name="virtualItemId"></param>
+            <param name="json"></param>
+            <returns>Returns json as string</returns>
+        </member>
+    </members>
+</doc>
