@@ -4,6 +4,31 @@
         <name>RGNVirtualItems</name>
     </assembly>
     <members>
+        <member name="T:RGN.Modules.VirtualItems.BlockchainInfo">
+            <summary>
+            Blockchain Information for minted Virtual Items
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.BlockchainInfo.purchasedQuantity">
+            <summary>
+            How many time this item was purchased
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.BlockchainInfo.totalQuantity">
+            <summary>
+            Maximal count of virtual items to sell
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.BlockchainInfo.tokenId">
+            <summary>
+            The Id of the NFT liked to this virtual item
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.BlockchainInfo.walletAddress">
+            <summary>
+            The address of the original minter of the NFT
+            </summary>
+        </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.id">
             <summary>
             Unique id of the virtual item
@@ -103,6 +128,11 @@
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.totalQuantity">
             <summary>
             How much quantity of the goods left (use only for NFT items)
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.blockchain">
+            <summary>
+            In case the virtual item is minted, the blockchain information is here
             </summary>
         </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItem.IsNFT">
