@@ -259,5 +259,14 @@
             <param name="json"></param>
             <returns>Returns json as string</returns>
         </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.UploadImageAsync(System.String,System.Byte[],System.Threading.CancellationToken)">
+            <summary>
+            Uploads an image thumbnail for a virtual item to the RGNCore backend.
+            </summary>
+            <param name="virtualItemId">The ID of the virtual item to upload the thumbnail for.</param>
+            <param name="thumbnailTextureBytes">The byte array of the thumbnail texture image to upload.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>A boolean indicating whether the upload was successful.</returns>
+        </member>
     </members>
 </doc>
