@@ -1,3 +1,16 @@
 {
-	"name": "GetReady.RGN.VirtualItems.Editor"
+    "name": "GetReady.RGN.VirtualItems.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c4bb8cbd3b051794da00f1907c55ca38"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
