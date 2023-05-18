@@ -29,6 +29,164 @@
             The address of the original minter of the NFT
             </summary>
         </member>
+        <member name="T:RGN.Modules.VirtualItems.PriceInfo">
+            <summary>
+            Represents pricing information for an item in the store.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.PriceInfo.appIds">
+            <summary>
+            List of application ids where this price information is used
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.PriceInfo.itemId">
+            <summary>
+            Virtual item id related to this price information
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.PriceInfo.name">
+            <summary>
+            Name of the coin. Reserved name is "rgn-coin"
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.PriceInfo.quantity">
+            <summary>
+            Quantity of the coins the virtual item is sold for
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.PriceInfo.quantityWithoutDiscount">
+            <summary>
+            Quantity of the coins the virtual item is sold for without discount
+            This field serves UI purposes to indicate "for sale" items
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.PriceInfo.group">
+            <summary>
+            Group information of the price. It is possible to group multiple prices together.
+            For example, you can sell a virtual item for "coin_name_1" and "coin_name_2" coins
+            This field works like a tag. Two prices with the same group name are combined together
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RGN.Modules.VirtualItems.PriceInfo"/> class. 
+            Used for JSON deserialization.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.#ctor(System.Collections.Generic.List{System.String},System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:RGN.Modules.VirtualItems.PriceInfo"/> class with specified appIds, itemId, name, and quantity.
+            </summary>
+            <param name="appIds">The list of application ids.</param>
+            <param name="itemId">The id of the virtual item.</param>
+            <param name="name">The name of the coin.</param>
+            <param name="quantity">The quantity of coins this item is sold for.</param>
+            <param name="quantityWithoutDiscount">The quantity of coins this item is sold for without discount. Defaults to maximum int value.</param>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.#ctor(System.Collections.Generic.List{System.String},System.String,System.String,System.Int32,System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:RGN.Modules.VirtualItems.PriceInfo"/> class with specified appIds, itemId, name, quantity, and group.
+            </summary>
+            <param name="appIds">The list of application ids.</param>
+            <param name="itemId">The id of the virtual item.</param>
+            <param name="name">The name of the price information.</param>
+            <param name="quantity">The quantity of coins this item is sold for</param>
+            <param name="group">The group name of the price.</param>
+            <param name="quantityWithoutDiscount">The quantity of coins this item is sold for without discount. Defaults to maximum int value.</param>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.ToString">
+            <summary>
+            Converts the object's properties to string representation.
+            </summary>
+            <returns>A string that represents the object's properties.</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.ToDiscountPriceCurrencyString">
+            <summary>
+            Converts the object's price properties to string representation, with discount markup if applicable.
+            </summary>
+            <returns>A string that represents the object's price properties.</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.Equals(RGN.Modules.VirtualItems.PriceInfo)">
+            <summary>
+            Determines whether the specified PriceInfo object is equal to the current object.
+            </summary>
+            <param name="other">The PriceInfo object to compare with the current object.</param>
+            <returns>true if the specified PriceInfo object is equal to the current object; otherwise, false.</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object.
+            </summary>
+            <param name="obj">The object to compare with the current object.</param>
+            <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.CompareAppIds(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+            <summary>
+            Compares two lists of application identifiers for equality.
+            </summary>
+            <param name="appIdsA">The first list of application identifiers.</param>
+            <param name="appIdsB">The second list of application identifiers.</param>
+            <returns>true if the two lists of application identifiers are equal; otherwise, false.</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.System#IEquatable{RGN#Modules#VirtualItems#PriceInfo}#Equals(RGN.Modules.VirtualItems.PriceInfo)">
+            <summary>
+            Determines whether the specified PriceInfo object is equal to the current object.
+            </summary>
+            <param name="other">The PriceInfo object to compare with the current object.</param>
+            <returns>true if the specified PriceInfo object is equal to the current object; otherwise, false.</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.PriceInfo.GetHashCode">
+            <summary>
+            Serves as the default hash function.
+            </summary>
+            <returns>A hash code for the current object.</returns>
+        </member>
+        <member name="T:RGN.Modules.VirtualItems.Properties">
+            <summary>
+            Represents properties associated with a virtual item within the Ready Games Network (RGN).
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.Properties.appIds">
+            <summary>
+            List of application identifiers where the properties are used.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.Properties.json">
+            <summary>
+            Game-specific properties in JSON format.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.Properties.#ctor">
+            <summary>
+            Default constructor for Properties.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.Properties.#ctor(System.String)">
+            <summary>
+            Creates a Properties instance with the specified JSON properties.
+            </summary>
+            <param name="json">Game-specific properties in JSON format.</param>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.Properties.#ctor(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates a Properties instance with the specified JSON properties and application identifiers.
+            </summary>
+            <param name="json">Game-specific properties in JSON format.</param>
+            <param name="appIds">List of application identifiers where the properties are used.</param>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.Properties.BuildStringFromPropertiesList(System.Collections.Generic.List{RGN.Modules.VirtualItems.Properties})">
+            <summary>
+            Converts a list of Properties instances to a string representation.
+            </summary>
+            <param name="properties">The list of Properties instances.</param>
+            <returns>A string that represents the given list of Properties instances.</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.Properties.ToString">
+            <summary>
+            Converts the value of this instance to its equivalent string representation.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.id">
             <summary>
             Unique id of the virtual item
@@ -164,6 +322,24 @@
             Handle virtual items (Buy, Create, Get, thumbnail)
             </summary>
         </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetRGNCore(RGN.IRGNRolesCore)">
+            <summary>
+            Sets the Ready Games Network (RGN) core reference.
+            </summary>
+            <param name="rgnCore">The RGN core to be set.</param>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Init">
+            <summary>
+            Initializes the VirtualItemsModule.
+            This method is currently empty and can be filled with initial setup logic if needed in the future.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Dispose">
+            <summary>
+            Releases all resources used by the VirtualItemsModule.
+            This method is currently empty and can be filled with cleanup logic if needed in the future.
+            </summary>
+        </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddVirtualItemAsync(RGN.Modules.VirtualItems.VirtualItem)">
             <summary>
             Add a virtual item
@@ -171,12 +347,40 @@
             <param name="virtualItem"></param>
             <returns></returns>
         </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddFromCSVAsync(System.String,System.Boolean,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously adds a list of virtual items from a CSV content string to the Ready Games Network.
+            </summary>
+            <param name="virtualItemName">The name of the virtual item.</param>
+            <param name="addBlockchainStub">A boolean indicating whether or not to add a blockchain stub.</param>
+            <param name="csvContent">The content of the CSV file as a string.</param>
+            <param name="csvDelimiter">The delimiter used in the CSV file (defaults to ',').</param>
+            <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
+            <exception cref="T:System.ArgumentException">Thrown when 'virtualItemName', 'csvContent', or 'csvDelimiter' is null or empty.</exception>
+            <exception cref="T:System.OperationCanceledException">Thrown when the operation is canceled via the provided CancellationToken.</exception>
+            <returns>
+            A Task that represents the asynchronous operation. The Task result contains a list of strings, which are the item IDs of the added virtual items.
+            </returns>
+        </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.UpdateVirtualItemAsync(System.String,RGN.Modules.VirtualItems.VirtualItem)">
             <summary>
-            Update a virtual item if exist
+            Asynchronously updates a specific virtual item in the Ready Games Network.
             </summary>
-            <param name="virtualItem"></param>
-            <returns></returns>
+            <param name="itemId">The ID of the virtual item to be updated.</param>
+            <param name="virtualItem">A VirtualItem object containing the new data for the virtual item.</param>
+            <returns>
+            A Task representing the asynchronous operation. The result of the Task is the updated VirtualItem.
+            </returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.DeleteVirtualItemAsync(System.String)">
+            <summary>
+            Asynchronously deletes a specific virtual item from the Ready Games Network.
+            </summary>
+            <param name="itemId">The ID of the virtual item to be deleted.</param>
+            <returns>
+            A Task representing the asynchronous operation.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when 'itemId' is null or empty.</exception>
         </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync">
             <summary>
@@ -226,6 +430,13 @@
             </summary>
             <param name="virtualItemId"></param>
             <param name="tags"></param>
+            <param name="appId">Optional parameter that you can use to retrieve items only for your app
+            When you set the tags for Virtual Item, you can use the appId optional parameter
+            The app id is attached to every tag and stored in the tags array
+            For example:
+            tags without appId could look like: "weapons", "rifles"
+            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
+            </param>
             <returns></returns>
         </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetNameAsync(System.String,System.String)">
