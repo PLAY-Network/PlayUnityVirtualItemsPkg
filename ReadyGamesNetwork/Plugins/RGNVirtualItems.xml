@@ -322,6 +322,59 @@
             Handle virtual items (Buy, Create, Get, thumbnail)
             </summary>
         </member>
+        <member name="T:RGN.Modules.VirtualItems.VirtualItemsModule.Admin">
+            <summary>
+            Handle critical operations on Virtual Items (delete by appId, delete by ids, delete by name)
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.SetRGNCore(RGN.IRGNRolesCore)">
+            <summary>
+            Sets the Ready Games Network (RGN) core reference.
+            </summary>
+            <param name="rgnCore">The RGN core to be set.</param>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.Init">
+            <summary>
+            Initializes the VirtualItemsModule.
+            This method is currently empty and can be filled with initial setup logic if needed in the future.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.Dispose">
+            <summary>
+            Releases all resources used by the VirtualItemsModule.
+            This method is currently empty and can be filled with cleanup logic if needed in the future.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemsByIdsAsync(System.Collections.Generic.List{System.String})">
+            <summary>
+            Asynchronously deletes specific virtual items from the Ready Games Network by their IDs.
+            </summary>
+            <param name="virtualItemIds">The list of IDs of the virtual items to be deleted.</param>
+            <returns>
+            A Task representing the asynchronous operation.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when 'virtualItemIds' is null or empty.</exception>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemsByNameAsync(System.String)">
+            <summary>
+            Asynchronously deletes specific virtual items from the Ready Games Network by their name.
+            </summary>
+            <param name="itemName">The name of the virtual items to be deleted.</param>
+            <returns>
+            A Task representing the asynchronous operation.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when 'itemName' is null or empty.</exception>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemByAppIdAsync(System.String)">
+            <summary>
+            Asynchronously deletes specific virtual items from the Ready Games Network by the App ID.
+            </summary>
+            <param name="appId">The App ID of the virtual items to be deleted.</param>
+            <returns>
+            A Task representing the asynchronous operation.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when 'appId' is null or empty.</exception>
+        </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetRGNCore(RGN.IRGNRolesCore)">
             <summary>
             Sets the Ready Games Network (RGN) core reference.
