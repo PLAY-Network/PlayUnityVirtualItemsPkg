@@ -207,12 +207,14 @@
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.createdAt">
             <summary>
             Date and time when the virtual item was created
+            in milliseconds since midnight, January 1, 1970 UTC.
             This field is automatically populated by the backend
             </summary>
         </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.updatedAt">
             <summary>
             Date and time when the virtual item data was last time updated
+            in milliseconds since midnight, January 1, 1970 UTC.
             This field is automatically populated by the backend
             </summary>
         </member>
