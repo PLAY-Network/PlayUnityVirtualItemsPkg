@@ -379,6 +379,21 @@
             </returns>
             <exception cref="T:System.ArgumentException">Thrown when 'appId' is null or empty.</exception>
         </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.AddFromCSVWithBlockchainStubAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously adds a list of virtual items from a CSV content string to the Ready Games Network.
+            Difference from main version is adding blockchain stub for dev tests
+            </summary>
+            <param name="virtualItemName">The name of the virtual item.</param>
+            <param name="csvContent">The content of the CSV file as a string.</param>
+            <param name="csvDelimiter">The delimiter used in the CSV file (defaults to ',').</param>
+            <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
+            <exception cref="T:System.ArgumentException">Thrown when 'virtualItemName', 'csvContent', or 'csvDelimiter' is null or empty.</exception>
+            <exception cref="T:System.OperationCanceledException">Thrown when the operation is canceled via the provided CancellationToken.</exception>
+            <returns>
+            A Task that represents the asynchronous operation. The Task result contains a list of strings, which are the item IDs of the added virtual items.
+            </returns>
+        </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetRGNCore(RGN.IRGNRolesCore)">
             <summary>
             Sets the Ready Games Network (RGN) core reference.
@@ -404,12 +419,11 @@
             <param name="virtualItem"></param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddFromCSVAsync(System.String,System.Boolean,System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddFromCSVAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously adds a list of virtual items from a CSV content string to the Ready Games Network.
             </summary>
             <param name="virtualItemName">The name of the virtual item.</param>
-            <param name="addBlockchainStub">A boolean indicating whether or not to add a blockchain stub.</param>
             <param name="csvContent">The content of the CSV file as a string.</param>
             <param name="csvDelimiter">The delimiter used in the CSV file (defaults to ',').</param>
             <param name="cancellationToken">A CancellationToken to observe while waiting for the task to complete.</param>
