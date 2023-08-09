@@ -331,24 +331,6 @@
             Handle critical operations on Virtual Items (delete by appId, delete by ids, delete by name)
             </summary>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.SetRGNCore(RGN.IRGNRolesCore)">
-            <summary>
-            Sets the Ready Games Network (RGN) core reference.
-            </summary>
-            <param name="rgnCore">The RGN core to be set.</param>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.Init">
-            <summary>
-            Initializes the VirtualItemsModule.Admin.
-            This method is currently empty and can be filled with initial setup logic if needed in the future.
-            </summary>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.Dispose">
-            <summary>
-            Releases all resources used by the VirtualItemsModule.Admin module.
-            This method is currently empty and can be filled with cleanup logic if needed in the future.
-            </summary>
-        </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemsByIdsAsync(System.Collections.Generic.List{System.String})">
             <summary>
             Asynchronously deletes specific virtual items from the Ready Games Network by their IDs.
@@ -393,24 +375,6 @@
             <returns>
             A Task that represents the asynchronous operation. The Task result contains a list of strings, which are the item IDs of the added virtual items.
             </returns>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetRGNCore(RGN.IRGNRolesCore)">
-            <summary>
-            Sets the Ready Games Network (RGN) core reference.
-            </summary>
-            <param name="rgnCore">The RGN core to be set.</param>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Init">
-            <summary>
-            Initializes the VirtualItemsModule.
-            This method is currently empty and can be filled with initial setup logic if needed in the future.
-            </summary>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Dispose">
-            <summary>
-            Releases all resources used by the VirtualItemsModule.
-            This method is currently empty and can be filled with cleanup logic if needed in the future.
-            </summary>
         </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddVirtualItemAsync(RGN.Modules.VirtualItems.VirtualItem)">
             <summary>
