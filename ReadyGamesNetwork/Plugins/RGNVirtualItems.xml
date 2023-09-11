@@ -204,6 +204,12 @@
             Is used also to store localization key for the description
             </summary>
         </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.image">
+            <summary>
+            Virtual item image object
+            Contains urls to different size of source uploaded image
+            </summary>
+        </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.createdAt">
             <summary>
             Date and time when the virtual item was created
