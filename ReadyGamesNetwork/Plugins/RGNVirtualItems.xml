@@ -67,6 +67,14 @@
             This field works like a tag. Two prices with the same group name are combined together
             </summary>
         </member>
+        <member name="F:RGN.Modules.VirtualItems.PriceInfo.nextPriceChangeAt">
+            <summary>
+            Date and time when the price will be updated
+            in milliseconds since midnight, January 1, 1970 UTC.
+            Refer to <see cref="T:RGN.Utility.DateTimeUtility"/> for helper methods.
+            This field is automatically populated by the backend when you schedule price changes
+            </summary>
+        </member>
         <member name="M:RGN.Modules.VirtualItems.PriceInfo.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:RGN.Modules.VirtualItems.PriceInfo"/> class. 
