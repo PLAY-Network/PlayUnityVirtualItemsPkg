@@ -19,11 +19,6 @@
             Maximal count of virtual items to sell
             </summary>
         </member>
-        <member name="F:RGN.Modules.VirtualItems.BlockchainInfo.tokenId">
-            <summary>
-            The Id of the NFT liked to this virtual item
-            </summary>
-        </member>
         <member name="F:RGN.Modules.VirtualItems.BlockchainInfo.walletAddress">
             <summary>
             The address of the original minter of the NFT
