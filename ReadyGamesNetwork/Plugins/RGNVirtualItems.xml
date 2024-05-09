@@ -250,14 +250,6 @@
             Only non stackable items can be upgraded
             </summary>
         </member>
-        <member name="F:RGN.Modules.VirtualItems.VirtualItem.isNFT">
-            <summary>
-            Indicates if the virtual item is a NFT.
-            Please use IsNFT() method to check if item is a NFT.
-            The NFT virtual items require primary user wallet
-            For more information see the API in WalletsModule
-            </summary>
-        </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.appIds">
             <summary>
             List of application ids where this item is used
@@ -268,17 +260,6 @@
             List of tags to filter the items
             You can place multiple items into one category tag
             For example in a shooter game: "guns", "rifles"
-            </summary>
-        </member>
-        <member name="F:RGN.Modules.VirtualItems.VirtualItem.childs">
-            <summary>
-            List of childs of the current virtual item. Virtual items ids list.
-            It is used to build tree structure hierarchies.
-            </summary>
-        </member>
-        <member name="F:RGN.Modules.VirtualItems.VirtualItem.addressableIds">
-            <summary>
-            List of addressable ids for the virtual item binary data
             </summary>
         </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.properties">
@@ -531,23 +512,6 @@
             <param name="size">The size type of virtual item image to download.</param>
             <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
             <returns>A byte array containing the image data.</returns>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.UploadMaterialTexturesAsync(System.String,System.Collections.Generic.List{System.Byte[]},System.Threading.CancellationToken)">
-            <summary>
-            Uploads a list of material textures for a virtual item to the RGN backend.
-            </summary>
-            <param name="virtualItemId">The ID of the virtual item to upload the thumbnail for.</param>
-            <param name="materialTexturesBytes">The list of byte arrays of the material textures to upload.</param>
-            <param name="cancellationToken">The cancellation token.</param>
-            <returns>A boolean indicating whether the upload was successful.</returns>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.DownloadMaterialTexturesAsync(System.String,System.Threading.CancellationToken)">
-            <summary>
-            Downloads material textures asynchronously for a specified virtual item ID.
-            </summary>
-            <param name="virtualItemId">The ID of the virtual item to download the material textures.</param>
-            <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
-            <returns>A list of byte arrays containing the material textures data.</returns>
         </member>
     </members>
 </doc>

@@ -36,7 +36,6 @@ namespace RGN.Samples
         [SerializeField] private TextMeshProUGUI _updatedByText;
         [SerializeField] private TextMeshProUGUI _tagsText;
         [SerializeField] private TextMeshProUGUI _appIdsText;
-        [SerializeField] private TextMeshProUGUI _childIdsText;
         [SerializeField] private TextMeshProUGUI _propertiesText;
         [SerializeField] private TextMeshProUGUI _isStackableText;
         [SerializeField] private LoadingIndicator _fullScreenLoadingIndicator;
@@ -83,7 +82,6 @@ namespace RGN.Samples
             _isStackableText.text = _virtualItem.isStackable ? "Item is stackable" : "Item is not stackable";
             _tagsText.text = StringsUtility.BuildStringFromStringsList(_virtualItem.tags, "tags");
             _appIdsText.text = StringsUtility.BuildStringFromStringsList(_virtualItem.appIds, "app ids");
-            _childIdsText.text = StringsUtility.BuildStringFromStringsList(_virtualItem.childs, "virtual item childs");
             _propertiesText.text = Properties.BuildStringFromPropertiesList(_virtualItem.properties);
             _isNFTImage.color = _virtualItem.IsNFT() ? RGNUISettings.I.ActiveColor : Color.gray;
             _isStackableImage.color = _virtualItem.isStackable ? RGNUISettings.I.ActiveColor : Color.gray;

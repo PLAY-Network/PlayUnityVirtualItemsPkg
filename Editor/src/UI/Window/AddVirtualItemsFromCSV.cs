@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR && READY_DEVELOPMENT
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
