@@ -437,18 +437,11 @@
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.String,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Returns a list of virtual items based on tags
             </summary>
             <param name="tags">List of tags to query the virtual items</param>
-            <param name="appId">Optional parameter that you can use to retrieve items only for your app
-            When you set the tags for Virtual Item, you can use the appId optional parameter
-            The app id is attached to every tag and stored in the tags array
-            For example:
-            tags without appId could look like: "weapons", "rifles"
-            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
-            </param>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
@@ -460,19 +453,12 @@
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.String,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Sets the tags array for a specific virtual item
             </summary>
             <param name="virtualItemId"></param>
             <param name="tags"></param>
-            <param name="appId">Optional parameter that you can use to retrieve items only for your app
-            When you set the tags for Virtual Item, you can use the appId optional parameter
-            The app id is attached to every tag and stored in the tags array
-            For example:
-            tags without appId could look like: "weapons", "rifles"
-            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
-            </param>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
