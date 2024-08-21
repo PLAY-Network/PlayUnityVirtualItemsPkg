@@ -321,31 +321,34 @@
             Handle critical operations on Virtual Items (delete by appId, delete by ids, delete by name)
             </summary>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemsByIdsAsync(System.Collections.Generic.List{System.String})">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemsByIdsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Asynchronously deletes specific virtual items from the Ready Games Network by their IDs.
             </summary>
             <param name="virtualItemIds">The list of IDs of the virtual items to be deleted.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>
             A Task representing the asynchronous operation.
             </returns>
             <exception cref="T:System.ArgumentException">Thrown when 'virtualItemIds' is null or empty.</exception>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemsByNameAsync(System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemsByNameAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously deletes specific virtual items from the Ready Games Network by their name.
             </summary>
             <param name="itemName">The name of the virtual items to be deleted.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>
             A Task representing the asynchronous operation.
             </returns>
             <exception cref="T:System.ArgumentException">Thrown when 'itemName' is null or empty.</exception>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemByAppIdAsync(System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.Admin.DeleteVirtualItemByAppIdAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously deletes specific virtual items from the Ready Games Network by the App ID.
             </summary>
             <param name="appId">The App ID of the virtual items to be deleted.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>
             A Task representing the asynchronous operation.
             </returns>
@@ -366,11 +369,12 @@
             A Task that represents the asynchronous operation. The Task result contains a list of strings, which are the item IDs of the added virtual items.
             </returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddVirtualItemAsync(RGN.Modules.VirtualItems.VirtualItem)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddVirtualItemAsync(RGN.Modules.VirtualItems.VirtualItem,System.Threading.CancellationToken)">
             <summary>
             Add a virtual item
             </summary>
             <param name="virtualItem"></param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.AddFromCSVAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
@@ -387,112 +391,110 @@
             A Task that represents the asynchronous operation. The Task result contains a list of strings, which are the item IDs of the added virtual items.
             </returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.UpdateVirtualItemAsync(System.String,RGN.Modules.VirtualItems.VirtualItem)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.UpdateVirtualItemAsync(System.String,RGN.Modules.VirtualItems.VirtualItem,System.Threading.CancellationToken)">
             <summary>
             Asynchronously updates a specific virtual item in the Ready Games Network.
             </summary>
             <param name="itemId">The ID of the virtual item to be updated.</param>
             <param name="virtualItem">A VirtualItem object containing the new data for the virtual item.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>
             A Task representing the asynchronous operation. The result of the Task is the updated VirtualItem.
             </returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.DeleteVirtualItemAsync(System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.DeleteVirtualItemAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously deletes a specific virtual item from the Ready Games Network.
             </summary>
             <param name="itemId">The ID of the virtual item to be deleted.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>
             A Task representing the asynchronous operation.
             </returns>
             <exception cref="T:System.ArgumentException">Thrown when 'itemId' is null or empty.</exception>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync(System.Threading.CancellationToken)">
             <summary>
              Getting all virtual items releated to your game
             </summary>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync(System.Int32,System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
              Returns a limited list of virtual items for your game.
             </summary>
             <param name="limit">Maximal count of items to return</param>
             <param name="startAfter">The item id to start after</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsByIdsAsync(System.Collections.Generic.List{System.String})">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsByIdsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Return a list of virtual items based on the Id list
             </summary>
             <param name="virtualItemsIds"></param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Returns a list of virtual items based on tags
             </summary>
             <param name="tags">List of tags to query the virtual items</param>
-            <param name="appId">Optional parameter that you can use to retrieve items only for your app
-            When you set the tags for Virtual Item, you can use the appId optional parameter
-            The app id is attached to every tag and stored in the tags array
-            For example:
-            tags without appId could look like: "weapons", "rifles"
-            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
-            </param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetTagsAsync(System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetTagsAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Returns all tags for specific virtual item
             </summary>
             <param name="virtualItemId"></param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Sets the tags array for a specific virtual item
             </summary>
             <param name="virtualItemId"></param>
             <param name="tags"></param>
-            <param name="appId">Optional parameter that you can use to retrieve items only for your app
-            When you set the tags for Virtual Item, you can use the appId optional parameter
-            The app id is attached to every tag and stored in the tags array
-            For example:
-            tags without appId could look like: "weapons", "rifles"
-            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
-            </param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetNameAsync(System.String,System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetNameAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Sets the name for a specific virtual item
             </summary>
             <param name="virtualItemId"></param>
             <param name="name"></param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetDescriptionAsync(System.String,System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetDescriptionAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Sets the description for a specific virtual item
             </summary>
             <param name="virtualItemId"></param>
             <param name="description"></param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetPropertiesAsync(System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetPropertiesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Returns json string or throws an exception if there are no json for virtual item
             </summary>
             <param name="virtualItemId"></param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>Returns json as string</returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetPropertiesAsync(System.String,System.String)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.SetPropertiesAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Set json on a given virtualItemId. 
             </summary>
             <param name="virtualItemId"></param>
             <param name="json"></param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>Returns json as string</returns>
         </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.UploadImageAsync(System.String,System.Byte[],System.Threading.CancellationToken)">
@@ -501,7 +503,7 @@
             </summary>
             <param name="virtualItemId">The ID of the virtual item to upload the thumbnail for.</param>
             <param name="thumbnailTextureBytes">The byte array of the thumbnail texture image to upload.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <returns>A boolean indicating whether the upload was successful.</returns>
         </member>
         <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.DownloadImageAsync(System.String,RGN.Model.ImageSize,System.Threading.CancellationToken)">
