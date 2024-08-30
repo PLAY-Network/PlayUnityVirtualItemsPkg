@@ -190,6 +190,26 @@
             </summary>
             <returns>A string that represents the current object.</returns>
         </member>
+        <member name="T:RGN.Modules.VirtualItems.GetAllVirtualItemsByAppIdsRequestData">
+            <summary>
+            Request data for the getByAppIds endpoint
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.GetAllVirtualItemsByAppIdsRequestData.appIds">
+            <summary>
+            The appIds you want to get the virtual items for.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.GetAllVirtualItemsByAppIdsRequestData.limit">
+            <summary>
+            Maximum returned results count. Use for pagination
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.GetAllVirtualItemsByAppIdsRequestData.startAfter">
+            <summary>
+            An optional parameter representing virtual item 'updatedAt' field after which start the retrieval
+            </summary>
+        </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.id">
             <summary>
             Unique id of the virtual item
@@ -420,12 +440,12 @@
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync(System.Int32,System.String,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetVirtualItemsAsync(System.Int32,System.Int64,System.Threading.CancellationToken)">
             <summary>
              Returns a limited list of virtual items for your game.
             </summary>
             <param name="limit">Maximal count of items to return</param>
-            <param name="startAfter">The item id to start after</param>
+            <param name="startAfter">An optional parameter representing virtual item 'updatedAt' field after which start the retrieval</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
@@ -437,11 +457,13 @@
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
-        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.Int32,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Returns a list of virtual items based on tags
             </summary>
             <param name="tags">List of tags to query the virtual items</param>
+            <param name="limit">Maximal count of items to return</param>
+            <param name="startAfter">An optional parameter representing virtual item 'updatedAt' field after which start the retrieval</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <returns></returns>
         </member>
