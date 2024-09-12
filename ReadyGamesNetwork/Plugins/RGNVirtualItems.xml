@@ -210,6 +210,16 @@
             An optional parameter representing virtual item 'updatedAt' field after which start the retrieval
             </summary>
         </member>
+        <member name="T:RGN.Modules.VirtualItems.VirtualItemResponseData">
+            <summary>
+            Response data that is used to get the virtual item
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItemResponseData.virtualItem">
+            <summary>
+            The virtual item data
+            </summary>
+        </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.id">
             <summary>
             Unique id of the virtual item
@@ -225,6 +235,12 @@
             <summary>
             Virtual item description
             Is used also to store localization key for the description
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.VirtualItems.VirtualItem.requestName">
+            <summary>
+            Virtual item request name
+            Is used also to identify a virtual item in human readable way
             </summary>
         </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.image">
@@ -462,6 +478,24 @@
             Returns a list of virtual items based on tags
             </summary>
             <param name="tags">List of tags to query the virtual items</param>
+            <param name="limit">Maximal count of items to return</param>
+            <param name="startAfter">An optional parameter representing virtual item 'updatedAt' field after which start the retrieval</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByRequestNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns a virtual item based on the item request name
+            </summary>
+            <param name="requestName">Request name of the virtual item</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
+            <returns>Virtual Item data</returns>
+        </member>
+        <member name="M:RGN.Modules.VirtualItems.VirtualItemsModule.GetByRequestNamesAsync(System.Collections.Generic.List{System.String},System.Int32,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Returns a list of virtual items based on request names
+            </summary>
+            <param name="requestNames">List of request names to query the virtual items</param>
             <param name="limit">Maximal count of items to return</param>
             <param name="startAfter">An optional parameter representing virtual item 'updatedAt' field after which start the retrieval</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
