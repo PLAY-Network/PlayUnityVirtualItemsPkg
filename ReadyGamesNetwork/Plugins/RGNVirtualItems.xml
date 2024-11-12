@@ -144,52 +144,6 @@
             </summary>
             <returns>A hash code for the current object.</returns>
         </member>
-        <member name="T:RGN.Modules.VirtualItems.Properties">
-            <summary>
-            Represents properties associated with a virtual item within the Ready Games Network (RGN).
-            </summary>
-        </member>
-        <member name="F:RGN.Modules.VirtualItems.Properties.appIds">
-            <summary>
-            List of application identifiers where the properties are used.
-            </summary>
-        </member>
-        <member name="F:RGN.Modules.VirtualItems.Properties.json">
-            <summary>
-            Game-specific properties in JSON format.
-            </summary>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.Properties.#ctor">
-            <summary>
-            Default constructor for Properties.
-            </summary>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.Properties.#ctor(System.String)">
-            <summary>
-            Creates a Properties instance with the specified JSON properties.
-            </summary>
-            <param name="json">Game-specific properties in JSON format.</param>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.Properties.#ctor(System.String,System.Collections.Generic.List{System.String})">
-            <summary>
-            Creates a Properties instance with the specified JSON properties and application identifiers.
-            </summary>
-            <param name="json">Game-specific properties in JSON format.</param>
-            <param name="appIds">List of application identifiers where the properties are used.</param>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.Properties.BuildStringFromPropertiesList(System.Collections.Generic.List{RGN.Modules.VirtualItems.Properties})">
-            <summary>
-            Converts a list of Properties instances to a string representation.
-            </summary>
-            <param name="properties">The list of Properties instances.</param>
-            <returns>A string that represents the given list of Properties instances.</returns>
-        </member>
-        <member name="M:RGN.Modules.VirtualItems.Properties.ToString">
-            <summary>
-            Converts the value of this instance to its equivalent string representation.
-            </summary>
-            <returns>A string that represents the current object.</returns>
-        </member>
         <member name="T:RGN.Modules.VirtualItems.GetAllVirtualItemsByAppIdsRequestData">
             <summary>
             Request data for the getByAppIds endpoint
@@ -301,9 +255,9 @@
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.properties">
             <summary>
             List of virtual item custom json. It is used to store game specific
-            json in json format.
-            For example: you can attach some json like "damage", "range",
-            "fireRate" attached to this item
+            data in json format.
+            For example: you can attach some data like "damage", "range",
+            "fireRate" values
             </summary>
         </member>
         <member name="F:RGN.Modules.VirtualItems.VirtualItem.prices">
