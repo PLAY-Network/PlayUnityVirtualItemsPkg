@@ -1,5 +1,5 @@
 ﻿{
-  "name": "io.getready.rgn.virtualitems",
+  "name": "io.play.unity.virtualitems",
   "displayName": "PLAY SDK. Virtual Items",
   "version": "0.16.0",
   "unity": "2020.3",
@@ -36,6 +36,6 @@
     }
   ],
   "dependencies": {
-    "io.getready.rgn.core": "0.16.0"
+    "io.play.unity.core": "0.16.0"
   }
 }

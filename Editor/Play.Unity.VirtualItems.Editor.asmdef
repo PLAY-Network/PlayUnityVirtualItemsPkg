@@ -1,5 +1,5 @@
 {
-    "name": "GetReady.RGN.VirtualItems.Editor",
+    "name": "Play.Unity.VirtualItems.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:c4bb8cbd3b051794da00f1907c55ca38"

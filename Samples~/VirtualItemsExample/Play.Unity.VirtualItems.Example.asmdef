@@ -1,5 +1,5 @@
 {
-    "name": "GetReady.RGN.VirtualItems.Example",
+    "name": "Play.Unity.VirtualItems.Example",
     "rootNamespace": "",
     "references": [
         "GUID:f4b4456533ec44545a2b0ce9b2760b49",
