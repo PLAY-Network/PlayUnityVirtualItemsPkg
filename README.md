@@ -1,2 +1,1 @@
-# Play SDK VirtualItems
-Package version: 0.16.0-dev.10
+# Play SDK Virtual Items
